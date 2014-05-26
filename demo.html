@@ -1,0 +1,53 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>SHMO</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui" />
+		<link href="dist/shmo.css" rel="stylesheet" />
+	</head>
+	<body>
+
+		<aside id="sidebar">
+			<h1>I'm a sidebar!
+		</aside>
+
+		<section id="main">
+			<header>
+				<nav>
+					<button data-aside="sidebar" class="text-smaller">
+						MENU
+					</button>
+				</nav>
+				<h1>Yo!</h1>
+			</header>
+			<article>
+				<button data-section="next">Next</button>
+			</article>
+		</section>
+
+		<section id="next">
+			<header>
+				<h1>Next!</h1>
+			</header>
+			<article>
+				<button data-section="back">Back</button>
+				<button data-section="next2">Next2</button>
+			</article>
+		</section>
+
+		<section id="next2" data-transition="cover">
+			<header>
+				<h1>Next 2!</h1>
+			</header>
+			<article>
+				<button data-section="back">Back</button>
+			</article>
+		</section>
+
+		<script src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
+		<script src="http://rawgithub.com/visionmedia/move.js/master/move.js"></script>
+		<script src="http://rawgithub.com/aarongloege/jquery.tap/master/jquery.tap.js"></script>
+		<script src="dist/shmo.js"></script>
+	</body>
+</html>

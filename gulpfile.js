@@ -20,7 +20,7 @@ gulp.task('less', function() {
 	return gulp.src('less/shmo.less')
 		.pipe(less())
 		.pipe(gulp.dest('dist'))
-		.pipe(rename('smo.min.css'))
+		.pipe(rename('shmo.min.css'))
 		.pipe(gulp.dest('dist'));
 });
 
