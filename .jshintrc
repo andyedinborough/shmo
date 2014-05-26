@@ -1,0 +1,6 @@
+{
+  "undef": true,
+  "unused": true,
+  "predef": [ "router", "transition", "current", "constants", "$", "move" ],
+  "browser": true
+}

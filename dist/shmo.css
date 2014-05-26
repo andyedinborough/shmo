@@ -1,0 +1,86 @@
+@import url("https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700");
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  border: none;
+  font-size: 1em;
+  color: inherit;
+  -webkit-tap-highlight-color: transparent;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+th,
+td {
+  text-align: left;
+  vertical-align: top;
+}
+img {
+  border: 0;
+}
+.cf:before,
+.cf:after {
+  content: " ";
+  /* 1 */
+  display: table;
+  /* 2 */
+}
+.cf:after {
+  clear: both;
+}
+body {
+  background: #000;
+  font: 18px 'Source Sans Pro';
+  -webkit-perspective: 1000px;
+}
+aside {
+  position: absolute;
+  top: 0;
+  background: #428bca;
+}
+section {
+  position: absolute;
+  top: 0;
+  left: 0;
+  visibility: hidden;
+  -webkit-transform-origin: right center;
+  transform-origin: right center;
+  -webkit-transform-style: preserve-3d;
+  transform-style: preserve-3d;
+}
+header {
+  background-color: #428bca;
+  color: white;
+  font-size: 1.4em;
+}
+header h1 {
+  text-align: center;
+  padding: 0.5em 0;
+}
+header nav {
+  float: left;
+}
+header button {
+  background: transparent;
+}
+footer {
+  background: #000;
+}
+button,
+.btn {
+  padding: 0.5em;
+}
+article {
+  background: #fff;
+}
+article button,
+article .btn {
+  background: #428bca;
+  color: white;
+  border-bottom: 2px solid #3071a9;
+}
+.text-smaller {
+  font-size: 0.8em;
+}

@@ -1,0 +1,21 @@
+{
+  "name": "shmo",
+  "version": "0.1.0",
+  "authors": [
+    "Andy Edinborough <andy@edinborough.org>"
+  ],
+  "moduleType": [
+    "globals"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "move.js": "~0.3.3"
+  }
+}
