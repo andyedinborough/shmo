@@ -7,6 +7,7 @@ var concat = require('gulp-concat');
 var mincss = require('gulp-minify-css');
 var uglify = require('gulp-uglify');
 var rename = require('gulp-rename');
+var livereload = require('gulp-livereload');
 
 // Lint Task
 gulp.task('lint', function() {
@@ -40,11 +41,23 @@ gulp.task('scripts', function() {
 		.pipe(gulp.dest('dist'));
 });
 
+// Debug Server
+gulp.task('server', function(next) {
+  var connect = require('connect'),
+      server = connect();
+  server.use(connect.static('./')).listen(process.env.PORT || 3000, next);
+});
+
 // Watch Files For Changes
-gulp.task('watch', function() {
+gulp.task('watch', ['server'], function() {
+	var server = livereload();
+	gulp.watch('dist/**', function(file) {
+		server.changed(file.path);
+	});
 	gulp.watch('js/*.js', ['lint', 'scripts']);
 	gulp.watch('less/*.less', ['less']);
 });
 
 // Default Task
 gulp.task('default', ['lint', 'less', 'scripts']);
+gulp.task('debug', ['default', 'watch']);
