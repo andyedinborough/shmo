@@ -6,7 +6,8 @@
   border: none;
   font-size: 1em;
   color: inherit;
-  -webkit-tap-highlight-color: transparent;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0) !important;
+  -webkit-font-smoothing: antialiased;
 }
 table {
   border-collapse: collapse;
@@ -30,10 +31,15 @@ img {
 .cf:after {
   clear: both;
 }
+::-webkit-scrollbar {
+  width: 0 !important;
+}
 body {
   background: #000;
   font: 18px 'Source Sans Pro';
   -webkit-perspective: 1000px;
+  perspective: 1000px;
+  overflow: hidden;
 }
 aside {
   position: absolute;
@@ -83,4 +89,7 @@ article .btn {
 }
 .text-smaller {
   font-size: 0.8em;
+}
+.scroll {
+  overflow: auto;
 }

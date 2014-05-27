@@ -8,12 +8,26 @@ var mincss = require('gulp-minify-css');
 var uglify = require('gulp-uglify');
 var rename = require('gulp-rename');
 var livereload = require('gulp-livereload');
+var notify = require('gulp-notify');
 
 // Lint Task
 gulp.task('lint', function() {
 	return gulp.src('js/*.js')
 		.pipe(jshint())
-		.pipe(jshint.reporter('default'));
+		.pipe(jshint.reporter('default'))
+		.pipe(notify(function (file) {
+			if (file.jshint.success) {
+				// Don't show something if success
+				return false;
+			}
+
+			var errors = file.jshint.results.map(function (data) {
+			if (data.error) {
+				return "(" + data.error.line + ':' + data.error.character + ') ' + data.error.reason;
+			}
+			}).join("\n");
+			return file.relative + " (" + file.jshint.results.length + " errors)\n" + errors;
+		}));
 });
 
 // Compile Our Sass
@@ -44,14 +58,14 @@ gulp.task('scripts', function() {
 // Debug Server
 gulp.task('server', function(next) {
   var connect = require('connect'),
-      server = connect();
+	  server = connect();
   server.use(connect.static('./')).listen(process.env.PORT || 3000, next);
 });
 
 // Watch Files For Changes
 gulp.task('watch', ['server'], function() {
 	var server = livereload();
-	gulp.watch('dist/**', function(file) {
+	gulp.watch('dist/**').on('change', function(file) {
 		server.changed(file.path);
 	});
 	gulp.watch('js/*.js', ['lint', 'scripts']);

@@ -1,16 +1,18 @@
 (function(window, undefined) {
-  'use strict';
+	'use strict';
 
-  var win = $(window),
-    body = $('body');
+	var win = $(window),
+		body = $('body');
 
-	var router = {
+	var router = window.router = {
 		history: [],
+		
 		back: function(cb) {
 			var cur = router.history.pop();
 			var prev = router.history.last();
 			transition.back(prev, cur, cb);
 		},
+
 		section: function(sel, cb) {
 			var section0 = current.section;
 			var section = $(sel);
@@ -19,7 +21,7 @@
 			if(section0) {
 				transition.forward(section, section0, cb);
 			} else {
-				section.visible(true).appendTo(body);
+				section.visible(true).insertAfter($('section:last'));
 				if(cb) cb();
 			}
 			return section;
@@ -54,13 +56,11 @@
 				transition.toggleClasses(true);
 				transition
 					.move(body)
-					.x(win.width() * constants.ASIDE_WIDTH)
+					.x(win.width() * constants.ASIDE_WIDTH | 0)
 					.end(_cb);
 			}
 			return aside;
 		}
 	};
-
-	window.router = router;
 
 })(window);

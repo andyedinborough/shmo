@@ -30,6 +30,10 @@
 		}
 	};
 
+	var doc = $(document);
+	$.on = $.fn.on.bind(doc);
+	$.off = $.fn.off.bind(doc);
+
 })(window);
 
 (function(window, undefined){
@@ -48,18 +52,20 @@
 })(window);
 
 (function(window, undefined) {
-  'use strict';
+	'use strict';
 
-  var win = $(window),
-    body = $('body');
+	var win = $(window),
+		body = $('body');
 
-	var router = {
+	var router = window.router = {
 		history: [],
+		
 		back: function(cb) {
 			var cur = router.history.pop();
 			var prev = router.history.last();
 			transition.back(prev, cur, cb);
 		},
+
 		section: function(sel, cb) {
 			var section0 = current.section;
 			var section = $(sel);
@@ -68,7 +74,7 @@
 			if(section0) {
 				transition.forward(section, section0, cb);
 			} else {
-				section.visible(true).appendTo(body);
+				section.visible(true).insertAfter($('section:last'));
 				if(cb) cb();
 			}
 			return section;
@@ -103,14 +109,12 @@
 				transition.toggleClasses(true);
 				transition
 					.move(body)
-					.x(win.width() * constants.ASIDE_WIDTH)
+					.x(win.width() * constants.ASIDE_WIDTH | 0)
 					.end(_cb);
 			}
 			return aside;
 		}
 	};
-
-	window.router = router;
 
 })(window);
 
@@ -143,7 +147,7 @@
 		},
 
 		forward: function(elm1, elm0, cb) {
-			var name = elm1.data('transition') || 'slide';
+			var name = elm1.data('transition') || constants.TRANSITION;
 			transition.toggleClasses(true);
 			elm1.visible(true).insertAfter(elm0);
 
@@ -159,23 +163,28 @@
 					transition.toggleClasses(false);
 					if(cb) cb();
 				});
-				mv0.end();
+				mv0.end(function(){
+					elm0.visible(false);
+				});
 			});
 		},
 
 		back: function(elm1, elm0, cb) {
 			transition.toggleClasses(true);
-			var name = elm0.data('transition') || 'slide';
+			var name = elm0.data('transition') || constants.TRANSITION;
 			var mv0 = transition.move(elm0);
 			var mv1 = transition.move(elm1);
 			transition.reset(mv1);
 			transition.reset(mv0, name);
+			elm1.visible(true);
 			mv1.end(function(){
 				elm1.insertAfter(elm0);
 				transition.toggleClasses(false);
 				if(cb) cb();
 			});
-			mv0.end();
+			mv0.end(function(){
+				elm0.visible(false);
+			});
 		},
 
 		reset: function(mv, name) {
@@ -216,6 +225,17 @@
 			}
 		},
 
+		slip: {
+			reset: function(mv) {
+				mv.x(win.width());
+			},
+
+			run: function(mv1, mv0) {
+				mv1.x(0);
+				mv0.x(-win.width() / 2);
+			}
+		},
+
 		cover: {
 			reset: function(mv) {
 				mv.y(win.height());
@@ -233,6 +253,10 @@
 
 (function(window, undefined) {
 	'use strict';
+
+	function getPageX(e) {
+		return e.touches && e.touches.length > 0 ? e.touches[0].pageX : e.pageX;
+	}
 
 	var win = $(window),
 		body = $('body'),
@@ -252,26 +276,29 @@
 	var constants = window.constants = {
 		DURATION: 400,
 		EASE: 'in-out',
-		ASIDE_WIDTH: 0.7
+		ASIDE_WIDTH: 0.7,
+		TRANSITION: 'slip'
 	};
 
 	win.on('resize deviceorientationchange init', function(){
 		var win_height = win.height();
 		var win_width = win.width();
 		var asides = $('aside');
+		var sections = $('section');
+		
 		asides
 			.height(win_height)
 			.css({
 				right: win_width,
-				width: win_width * constants.ASIDE_WIDTH
-			});
+				width: win_width * constants.ASIDE_WIDTH | 0
+			})
+			.insertAfter(sections.last());
 
 		body.width(win_width).height(win_height);
 		html
 			.toggleClass('portrait', win_width < win_height)
 			.toggleClass('landscape', win_width > win_height);
 
-		var sections = $('section');
 		sections.height(win_height).width(win_width);
 		sections.forEach(function(section){
 			section = $(section);
@@ -293,21 +320,57 @@
 		win.trigger('init');
 		transition.toggleClasses(false);
 		router.section('#main');
+		$('aside').visible(true);
 	});
 
-	$(document)
-		.on('tap', '.not-routing [data-section]', function(e) {
-			e.preventDefault();
-			var id = $(this).data('section');
-			if(id === 'back') {
-				router.back();
-			} else {
-				router.section('#' + id);
+	$.on('tap', '.not-routing [data-section]', function(e) {
+		e.preventDefault();
+		var id = $(this).data('section');
+		if(id === 'back') {
+			router.back();
+		} else {
+			router.section('#' + id);
+		}
+	})
+	.on('tap', '.not-routing [data-aside]', function(e) {
+		e.preventDefault();
+		router.aside('#' + $(this).data('aside'));
+	});
+	
+	(function(){
+		var _aside_x, _aside, _aside_width, _aside_delta;
+		$.on('touchstart mousedown', '.not-routing [data-aside]', function(e) {
+			_aside_x = getPageX(e);
+			_aside_delta = 0;
+			_aside = $('#' + $(this).data('aside'));
+			if(_aside.length === 0) {
+				_aside = null;
+				return;
 			}
+			_aside_width = _aside.width();
 		})
-		.on('tap', '.not-routing [data-aside]', function(e) {
+		.on('touchmove mousemove', function(e) {
+			if(!_aside) return;
 			e.preventDefault();
-			router.aside('#' + $(this).data('aside'));
+			_aside_delta = getPageX(e) - _aside_x;
+			_aside_delta = Math.max(0, _aside_delta);
+			_aside_delta = Math.min(_aside_width, _aside_delta);
+			body.css('transform', 'translateX(' + _aside_delta + 'px)');
+		})
+		.on('touchend mouseup', function(e) {
+			if(!_aside) return;
+			if(_aside_delta !== 0) {
+				e.preventDefault();
+				var show = _aside_delta > _aside_width / 2;
+				if(show) {
+					router.aside(_aside);
+				} else {
+					router.aside();
+				}
+			}
+			_aside = null;
 		});
+
+	})();
 
 })(window);

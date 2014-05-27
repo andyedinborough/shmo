@@ -27,7 +27,7 @@
 		},
 
 		forward: function(elm1, elm0, cb) {
-			var name = elm1.data('transition') || 'slide';
+			var name = elm1.data('transition') || constants.TRANSITION;
 			transition.toggleClasses(true);
 			elm1.visible(true).insertAfter(elm0);
 
@@ -43,23 +43,28 @@
 					transition.toggleClasses(false);
 					if(cb) cb();
 				});
-				mv0.end();
+				mv0.end(function(){
+					elm0.visible(false);
+				});
 			});
 		},
 
 		back: function(elm1, elm0, cb) {
 			transition.toggleClasses(true);
-			var name = elm0.data('transition') || 'slide';
+			var name = elm0.data('transition') || constants.TRANSITION;
 			var mv0 = transition.move(elm0);
 			var mv1 = transition.move(elm1);
 			transition.reset(mv1);
 			transition.reset(mv0, name);
+			elm1.visible(true);
 			mv1.end(function(){
 				elm1.insertAfter(elm0);
 				transition.toggleClasses(false);
 				if(cb) cb();
 			});
-			mv0.end();
+			mv0.end(function(){
+				elm0.visible(false);
+			});
 		},
 
 		reset: function(mv, name) {
@@ -97,6 +102,17 @@
 			run: function(mv1, mv0) {
 				mv1.x(0);
 				mv0.opacity(0).rotateY(-45);
+			}
+		},
+
+		slip: {
+			reset: function(mv) {
+				mv.x(win.width());
+			},
+
+			run: function(mv1, mv0) {
+				mv1.x(0);
+				mv0.x(-win.width() / 2);
 			}
 		},
 

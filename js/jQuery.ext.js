@@ -21,4 +21,8 @@
 		}
 	};
 
+	var doc = $(document);
+	$.on = $.fn.on.bind(doc);
+	$.off = $.fn.off.bind(doc);
+
 })(window);

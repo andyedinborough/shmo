@@ -7,6 +7,8 @@ body {
 	background: #000;
 	font: 18px 'Source Sans Pro';
 	-webkit-perspective: 1000px;
+	perspective: 1000px;
+	overflow: hidden;
 }
 aside {
 	position: absolute;
@@ -20,8 +22,8 @@ section {
 	visibility: hidden;
 	-webkit-transform-origin: right center;
 	transform-origin: right center;
--webkit-transform-style: preserve-3d;
-transform-style: preserve-3d;
+	-webkit-transform-style: preserve-3d;
+	transform-style: preserve-3d;
 }
 header {
 	background-color: @blue;
@@ -62,4 +64,8 @@ article {
 
 .text-smaller {
 	font-size: 0.8em;
+}
+
+.scroll {
+	overflow: auto;
 }
