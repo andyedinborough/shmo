@@ -2,13 +2,24 @@
 .notification {
   color: #fff;
   background-color: rgba(0, 0, 0, 0.5);
-  display: none;
   position: absolute;
-  width: 100%;
-  height: inherit;
+
   text-align: center;
+  opacity: 0;
+  top: 0;
+  left: -100%;
+  bottom: 0;
+  width: 100%;
+
+  -webkit-transition: opacity 100ms;
+  transition: opacity 100ms;
+
   &.show {
-    display: block;
+    opacity: 1;
+    left: 0;
+  }
+  &.hiding {
+    opacity: 0 !important;
   }
 }
 
@@ -47,8 +58,14 @@
   opacity: 0;
   min-width: 80%;
   font-size: 1.5em;
+  margin-top: 2em;
+
+  -webkit-transition: opacity 400ms, margin-top 400ms;
+  transition: opacity 400ms, margin-top 400ms;
+
   &.show {
     opacity: 1;
+    margin-top: 0;
   }
 
   button, .btn {
@@ -101,7 +118,7 @@
     }
   }
 }
- 
+
 .notification .window.growl {
   background-color: rgba(0,0,0,0.8);
 }
@@ -114,7 +131,7 @@
   background-color: #fff;
   color: #3d3d3d;
   font-weight: 400;
-} 
+}
 .notification .window.html,
 .notification .window.confirm {
   background-color: #f4f4f4;
@@ -147,7 +164,7 @@
 .notification .window.html .title {
   background-color: @brand-success;
   color: #fff;
-} 
+}
 .notification .window small {
   font-weight: 300;
 }

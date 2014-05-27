@@ -23,6 +23,10 @@
 			</header>
 			<article>
 				<button data-section="next">Next</button>
+
+				<button id="btn-test-confirm">Confirm</button>
+				<button id="btn-test-success">Success</button>
+				<button id="btn-test-error">Error</button>
 			</article>
 		</section>
 
@@ -49,5 +53,18 @@
 		<script src="http://rawgithub.com/visionmedia/move.js/master/move.js"></script>
 		<script src="http://rawgithub.com/aarongloege/jquery.tap/master/jquery.tap.js"></script>
 		<script src="dist/shmo.js"></script>
+		<script>
+			$.on('tap', '#btn-test-confirm', function(e){
+				e.preventDefault();
+			})
+			.on('tap', '#btn-test-success', function(e) {
+				e.preventDefault();
+				notification.success('YES!');
+			})
+			.on('tap', '#btn-test-error', function(e) {
+				e.preventDefault();
+				notification.error('NO!');
+			})
+		</script>
 	</body>
 </html>

@@ -106,14 +106,22 @@ article .btn {
 .notification {
   color: #fff;
   background-color: rgba(0, 0, 0, 0.5);
-  display: none;
   position: absolute;
-  width: 100%;
-  height: inherit;
   text-align: center;
+  opacity: 0;
+  top: 0;
+  left: -100%;
+  bottom: 0;
+  width: 100%;
+  -webkit-transition: opacity 100ms;
+  transition: opacity 100ms;
 }
 .notification.show {
-  display: block;
+  opacity: 1;
+  left: 0;
+}
+.notification.hiding {
+  opacity: 0 !important;
 }
 .notification.push {
   padding: 12px;
@@ -146,9 +154,13 @@ article .btn {
   opacity: 0;
   min-width: 80%;
   font-size: 1.5em;
+  margin-top: 2em;
+  -webkit-transition: opacity 400ms, margin-top 400ms;
+  transition: opacity 400ms, margin-top 400ms;
 }
 .notification .window.show {
   opacity: 1;
+  margin-top: 0;
 }
 .notification .window button,
 .notification .window .btn {

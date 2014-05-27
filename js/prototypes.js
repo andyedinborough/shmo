@@ -35,7 +35,7 @@
 			return obj;
 		};
 	}
-	
+
 	if (!Date.now) {
 		Date.now = function() {
 			return new Date().getTime();
@@ -66,6 +66,18 @@
 			}
 		}
 	});
+
+	if(!Array.from) {
+		Array.from = function(arrayish) {
+			return Array.prototype.slice.apply(arrayish);
+		};
+	}
+
+	if(!Array.of) {
+		Array.of = function(){
+			return Array.from(arguments);
+		};
+	}
 
 	if (!window.setImmediate) {
 		window.setImmediate = function(cb) {

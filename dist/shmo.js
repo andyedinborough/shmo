@@ -35,7 +35,7 @@
 			return obj;
 		};
 	}
-	
+
 	if (!Date.now) {
 		Date.now = function() {
 			return new Date().getTime();
@@ -66,6 +66,18 @@
 			}
 		}
 	});
+
+	if(!Array.from) {
+		Array.from = function(arrayish) {
+			return Array.prototype.slice.apply(arrayish);
+		};
+	}
+
+	if(!Array.of) {
+		Array.of = function(){
+			return Array.from(arguments);
+		};
+	}
 
 	if (!window.setImmediate) {
 		window.setImmediate = function(cb) {
@@ -391,9 +403,9 @@
 	var _lastTransitionEnd;
 	var CUSTOM_EVENT_NAME = 'x-transitionend';
 
-	function _bind(func, args) {
-		args = [].slice.apply(args);
-		args.unshift(null);
+	function _bind(func, args, self) {
+		args = Array.from(args);
+		args.unshift(self);
 		return Function.prototype.bind.apply(func, args);
 	}
 
@@ -428,11 +440,19 @@
 					_state = _state === STATES.SHOWING ? STATES.SHOWN :
 						_state === STATES.HIDING ? STATES.HIDDEN :
 						_state;
+				})
+				.on('tap', function(e) {
+					if(e.isDefaultPrevented()) {
+						return;
+					}
+					notification.hide();
 				});
 
 			_dialogID = _dialog.id();
 			_addClass = _dialog.addClass.bind(_dialog, 'show');
 			_removeClass = _dialog.removeClass.bind(_dialog, 'show');
+
+			return void setTimeout(_bind(_show, arguments), 20);
 		}
 
 		if(_state !== STATES.HIDDEN) {
@@ -443,7 +463,7 @@
 			.removeAttr('class')
 			.attr('class', 'window')
 			.addClass(className);
-		
+
 		_modal.addClass('show');
 		clearTimeout(_tmr_show);
 		_dialog.one(CUSTOM_EVENT_NAME, function(){
@@ -469,15 +489,18 @@
 		}
 
 		_afterHiddenCallback = function(){
-			if(hideModal !== false) {
-				_modal.removeClass('show');
-			}
 			setImmediate(cb);
 		};
 
 		if(_state === STATES.SHOWN) {
 			_dialog.one(CUSTOM_EVENT_NAME, _afterHidden);
 			_toggle(false);
+			if(hideModal !== false) {
+				_modal.one('transitionend', function(e){
+					if(e.target != this) return;
+					_modal.removeClass('hiding show');
+				}).addClass('hiding');
+			}
 		}
 	}
 
@@ -524,7 +547,7 @@
 			}
 			return _show(_builder(title, description, icon || 'ok'), duration, 'success', cb);
 		},
-		
+
 		successThenBack: function successThenBack(title, description, icon, duration, callback) {
 			if ($.type(title) === 'object' && 'title' in title) {
 				return successThenBack(title.title, title.description, title.icon, title.duration, title.callback);
