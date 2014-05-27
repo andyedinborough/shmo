@@ -55,6 +55,16 @@ section {
   transform-origin: right center;
   -webkit-transform-style: preserve-3d;
   transform-style: preserve-3d;
+  -webkit-user-select: none;
+  -moz-user-select: -moz-none;
+  user-select: none;
+  overflow: hidden;
+}
+section input,
+section textarea {
+  -webkit-user-select: text;
+  -moz-user-select: -moz-text;
+  user-select: text;
 }
 header {
   background-color: #428bca;
@@ -92,4 +102,192 @@ article .btn {
 }
 .scroll {
   overflow: auto;
+}
+.notification {
+  color: #fff;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: none;
+  position: absolute;
+  width: 100%;
+  height: inherit;
+  text-align: center;
+}
+.notification.show {
+  display: block;
+}
+.notification.push {
+  padding: 12px;
+  background-color: rgba(0, 0, 0, 0.9);
+  height: auto;
+}
+.notification.push.error {
+  background-color: rgba(217, 83, 79, 0.9);
+}
+.notification.push.success {
+  background-color: rgba(92, 184, 92, 0.9);
+}
+.notification .growl {
+  border-radius: 0.2em;
+}
+.notification a {
+  color: #428bca;
+  margin: 0 0.3em;
+}
+.notification:before {
+  content: '';
+  display: inline-block;
+  height: 100%;
+  vertical-align: middle;
+}
+.notification .window {
+  display: inline-block;
+  vertical-align: middle;
+  text-align: center;
+  opacity: 0;
+  min-width: 80%;
+  font-size: 1.5em;
+}
+.notification .window.show {
+  opacity: 1;
+}
+.notification .window button,
+.notification .window .btn {
+  display: block;
+  border: none;
+  font-size: 1.2em;
+}
+.notification .window.success,
+.notification .window.error {
+  border-bottom: none;
+}
+.notification .window.success:after,
+.notification .window.error:after {
+  content: 'OK';
+  font-size: 2em;
+  display: block;
+}
+.notification .window.success:after {
+  background-color: #5cb85c;
+}
+.notification .window.error:after {
+  background-color: #d9534f;
+}
+.notification .window.multi {
+  position: absolute;
+  bottom: 5%;
+  left: 50%;
+  margin-left: -140px;
+  background: transparent;
+}
+.notification .window.multi span,
+.notification .window.multi strong {
+  background: #EEE;
+  padding: 0.5em;
+}
+.notification .window.multi button {
+  -webkit-box-shadow: none !important;
+  box-shadow: none !important;
+  border-radius: 0.3em;
+}
+.notification .window.multi button.text-primary {
+  color: #428bca;
+}
+.notification .window.multi button.btn-cancel {
+  margin-top: 0.6em;
+}
+.notification .window.growl {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+.notification .window.growl strong {
+  color: #bfbfbf;
+  font-weight: 700;
+}
+.notification .window.confirm button,
+.notification .window.html button {
+  background-color: #fff;
+  color: #3d3d3d;
+  font-weight: 400;
+}
+.notification .window.html,
+.notification .window.confirm {
+  background-color: #f4f4f4;
+  color: #000;
+}
+.notification .window.confirm > small,
+.notification .window.confirm > .icon {
+  color: #808080;
+}
+.notification .window.confirm > button:nth-child(1) {
+  color: #e74c3c !important;
+}
+.notification .window.error,
+.notification .window.success {
+  background-color: rgba(0, 0, 0, 0.8);
+  color: #fff;
+}
+.notification .window.error small,
+.notification .window.success small {
+  color: #bfbfbf;
+}
+.notification .window.error > .icon {
+  color: #e74c3c;
+}
+.notification .window.success > .icon {
+  color: #5cb85c;
+}
+.notification .window.html .title {
+  background-color: #5cb85c;
+  color: #fff;
+}
+.notification .window small {
+  font-weight: 300;
+}
+.loader {
+  padding: 0.5em;
+}
+.loading {
+  border: 2px solid rgba(0, 0, 0, 0.1);
+  font-size: 2em;
+  width: 1em;
+  height: 1em;
+  border-radius: .5em;
+  -webkit-animation: spin 700ms linear infinite !important;
+  animation: spin 700ms linear infinite !important;
+  border-top-color: #428bca;
+  margin: 0.5em auto;
+  left: auto;
+}
+.loading.white {
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-top-color: white;
+}
+.loading .top,
+.loading .right,
+.loading .bottom,
+.loading .left {
+  display: none;
+}
+.growl .loading {
+  font-size: 3em;
+  top: 0 !important;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  padding: 0;
+}
+.notification .window.growl {
+  background: transparent;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+@-webkit-keyframes spin {
+  to {
+    -webkit-transform: rotate(360deg);
+  }
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
 }

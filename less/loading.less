@@ -1,0 +1,51 @@
+
+.loader {
+	padding: 0.5em;
+}
+
+.loading {
+	border: 2px solid rgba(0,0,0,.1);
+	font-size: 2em;
+	width: 1em;
+	height: 1em;
+	border-radius: .5em;
+	-webkit-animation: spin 700ms linear infinite !important;
+	animation: spin 700ms linear infinite !important;
+	border-top-color: @brand;
+	margin: 0.5em auto;
+	left: auto;
+
+	&.white {
+		border: 2px solid rgba(255,255,255,.1);
+		border-top-color: white;
+	}
+
+	.top,.right,.bottom,.left {
+		display: none;
+	}
+}
+
+.growl .loading {
+	font-size: 3em;
+	top: 0 !important; left: 0; right: 0; bottom: 0;
+	margin: auto;
+	padding: 0;
+}
+
+.notification .window.growl {
+	background: transparent;
+	-webkit-box-shadow: none;
+	box-shadow: none;
+}
+
+@-webkit-keyframes spin {
+	to {
+		-webkit-transform: rotate(360deg);
+	}
+}
+
+@keyframes spin {
+	to {
+		transform: rotate(360deg);
+	}
+}

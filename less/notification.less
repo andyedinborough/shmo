@@ -1,0 +1,153 @@
+
+.notification {
+  color: #fff;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: none;
+  position: absolute;
+  width: 100%;
+  height: inherit;
+  text-align: center;
+  &.show {
+    display: block;
+  }
+}
+
+.notification.push {
+  padding: 12px;
+  background-color: rgba(0,0,0,.90);
+  height: auto;
+  &.error {
+    background-color: fade(@brand-danger, 90%);
+  }
+  &.success {
+    background-color: fade(@brand-success, 90%);
+  }
+}
+
+.notification .growl {
+  border-radius: 0.2em;
+}
+
+.notification a {
+  color: @brand-primary;
+  margin: 0 0.3em;
+}
+
+.notification:before {
+  content: '';
+  display: inline-block;
+  height: 100%;
+  vertical-align: middle;
+}
+
+.notification .window {
+  display: inline-block;
+  vertical-align: middle;
+  text-align: center;
+  opacity: 0;
+  min-width: 80%;
+  font-size: 1.5em;
+  &.show {
+    opacity: 1;
+  }
+
+  button, .btn {
+    display: block;
+    border: none;
+    font-size: 1.2em;
+  }
+
+  &.success, &.error {
+    border-bottom: none;
+    &:after {
+      content: 'OK';
+      font-size: 2em;
+      display: block;
+    }
+  }
+
+  &.success:after {
+    background-color: @brand-success;
+  }
+
+  &.error:after {
+    background-color: @brand-danger;
+  }
+
+  &.multi {
+    position: absolute;
+    bottom: 5%;
+    left: 50%;
+    margin-left: -140px;
+    background: transparent;
+
+    span, strong {
+      background: #EEE;
+      padding: 0.5em;
+    }
+
+    button {
+      -webkit-box-shadow: none !important;
+      box-shadow: none !important;
+      border-radius: 0.3em;
+
+      &.text-primary {
+        color: @brand;
+      }
+
+      &.btn-cancel {
+        margin-top: 0.6em;
+      }
+    }
+  }
+}
+ 
+.notification .window.growl {
+  background-color: rgba(0,0,0,0.8);
+}
+.notification .window.growl strong {
+  color: #bfbfbf;
+  font-weight: 700;
+}
+.notification .window.confirm button,
+.notification .window.html button {
+  background-color: #fff;
+  color: #3d3d3d;
+  font-weight: 400;
+} 
+.notification .window.html,
+.notification .window.confirm {
+  background-color: #f4f4f4;
+  color: #000;
+}
+.notification .window.confirm > small,
+.notification .window.confirm > .icon {
+  color: #808080;
+}
+.notification .window.confirm > button:nth-child(1) {
+  color: #e74c3c !important;
+}
+.notification .window.error,
+.notification .window.success {
+  background-color: rgba(0,0,0,0.8);
+  color: #fff;
+}
+.notification .window.error small,
+.notification .window.success small {
+  color: #bfbfbf;
+}
+
+.notification .window.error > .icon {
+  color: #e74c3c;
+}
+
+.notification .window.success > .icon {
+  color: @brand-success;
+}
+.notification .window.html .title {
+  background-color: @brand-success;
+  color: #fff;
+} 
+.notification .window small {
+  font-weight: 300;
+}

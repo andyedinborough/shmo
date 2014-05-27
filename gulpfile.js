@@ -36,6 +36,7 @@ gulp.task('less', function() {
 		.pipe(less())
 		.pipe(gulp.dest('dist'))
 		.pipe(rename('shmo.min.css'))
+		.pipe(mincss())
 		.pipe(gulp.dest('dist'));
 });
 
@@ -44,8 +45,10 @@ gulp.task('scripts', function() {
 	return gulp.src([
 			'js/prototypes.js',
 			'js/*.ext.js',
+			'js/utils.js',
 			'js/router.js',
 			'js/transition.js',
+			'js/notification.js',
 			'js/shmo.js'
 		])
 		.pipe(concat('shmo.js'))

@@ -1,5 +1,10 @@
 @import url("https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700");
-@blue: #428bca;
+@brand-primary: #428bca;
+@brand-success: #5cb85c;
+@brand-info:    #5bc0de;
+@brand-warning: #f0ad4e;
+@brand-danger:  #d9534f;
+@brand: @brand-primary;
 
 @import 'reset';
 
@@ -13,7 +18,7 @@ body {
 aside {
 	position: absolute;
 	top: 0;
-	background: @blue;
+	background: @brand;
 }
 section {
 	position: absolute;
@@ -24,9 +29,20 @@ section {
 	transform-origin: right center;
 	-webkit-transform-style: preserve-3d;
 	transform-style: preserve-3d;
+ 
+	-webkit-user-select: none;
+	-moz-user-select: -moz-none;
+	user-select: none;
+	overflow: hidden;
+	input, textarea {
+		-webkit-user-select: text;
+		-moz-user-select: -moz-text;
+		user-select: text;
+	}
 }
+
 header {
-	background-color: @blue;
+	background-color: @brand;
 	color: white;
 	font-size: 1.4em;
 
@@ -56,9 +72,9 @@ article {
 	background: #fff;
 
 	button, .btn {
-		background: @blue;
+		background: @brand;
 		color: white;
-		border-bottom: 2px solid darken(@blue, 10%);
+		border-bottom: 2px solid darken(@brand, 10%);
 	}
 }
 
@@ -69,3 +85,6 @@ article {
 .scroll {
 	overflow: auto;
 }
+
+@import 'notification';
+@import 'loading';
