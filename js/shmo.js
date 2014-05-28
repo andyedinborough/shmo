@@ -28,7 +28,7 @@
 		TRANSITION: 'slip'
 	};
 
-	win.on('resize deviceorientationchange init', function(){
+	win.on('resize deviceorientationchange load init', function(){
 		var win_height = win.height();
 		var win_width = win.width();
 		var asides = $('aside');

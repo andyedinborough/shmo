@@ -110,6 +110,10 @@ article .btn {
 .scroll {
   overflow: auto;
 }
+section[data-transition="slip"].showing,
+section[data-transition="slip"].hiding {
+  box-shadow: -5px 0 100px rgba(0, 0, 0, 0.1);
+}
 .notification {
   background-color: rgba(0, 0, 0, 0.5);
   top: 0;

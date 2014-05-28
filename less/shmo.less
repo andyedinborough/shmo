@@ -99,6 +99,13 @@ article {
 	overflow: auto;
 }
 
+section[data-transition="slip"] {
+	&.showing, &.hiding {
+		box-shadow: -5px 0 100px rgba(0,0,0,.1)
+	}
+}
+
+
 @import 'notification';
 @import 'loading';
 @import '../bower_components/bootstrap/less/glyphicons';
