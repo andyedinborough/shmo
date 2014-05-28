@@ -6,6 +6,10 @@
 @brand-danger:  #d9534f;
 @brand: @brand-primary;
 
+@icon-font-path: '';
+@icon-font-name: 'glyphicons-halflings-regular';
+@icon-font-svg-id: 'glyphicons_halflingsregular';
+
 @import 'reset';
 
 body {
@@ -29,7 +33,7 @@ section {
 	transform-origin: right center;
 	-webkit-transform-style: preserve-3d;
 	transform-style: preserve-3d;
- 
+
 	-webkit-user-select: none;
 	-moz-user-select: -moz-none;
 	user-select: none;
@@ -82,9 +86,19 @@ article {
 	font-size: 0.8em;
 }
 
+.pull-right {
+	float: right;
+}
+
+.anchor {
+	width: 100%;
+	display: block;
+}
+
 .scroll {
 	overflow: auto;
 }
 
 @import 'notification';
 @import 'loading';
+@import '../bower_components/bootstrap/less/glyphicons';

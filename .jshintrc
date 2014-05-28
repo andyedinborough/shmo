@@ -2,5 +2,6 @@
   "undef": true,
   "unused": true,
   "predef": [ "router", "transition", "current", "constants", "utils", "$", "move" ],
-  "browser": true
+  "browser": true,
+  "strict": true
 }

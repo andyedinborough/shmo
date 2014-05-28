@@ -1,19 +1,19 @@
 
 .notification {
 	background-color: rgba(0, 0, 0, 0.5);
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
 }
 
 .notification, .notification-window {
-  display: none;
-  position: absolute;
+	display: none;
+	position: absolute;
 
-  &.showing,&.hiding,&.shown {
-    display: block;
-  }
+	&.showing,&.hiding,&.shown {
+		display: block;
+	}
 }
 
 .notification.push {
@@ -38,10 +38,9 @@
 }
 
 .notification-window {
-  text-align: center;
+	text-align: center;
 	font-size: 1.5em;
-  background-color: rgba(0,0,0,0.8);
-  color: #fff;
+	color: #fff;
 
 	button, .btn {
 		display: block;
@@ -64,6 +63,18 @@
 
 	&.error:after {
 		background-color: @brand-danger;
+	}
+
+	.icon {
+		display: block;
+		font-size: 3em;
+		line-height: 1.5em;
+	}
+
+	& > strong {
+		display: block;
+		font-size: 1.5em;
+		line-height: 2em;
 	}
 
 	&.multi {
@@ -94,52 +105,52 @@
 	}
 }
 
-.notification .window.growl {
+.notification-window.growl {
 	background-color: rgba(0,0,0,0.8);
 }
-.notification .window.growl strong {
+.notification-window.growl strong {
 	color: #bfbfbf;
 	font-weight: 700;
 }
-.notification .window.confirm button,
-.notification .window.html button {
+.notification-window.confirm button,
+.notification-window.html button {
 	background-color: #fff;
 	color: #3d3d3d;
 	font-weight: 400;
 }
-.notification .window.html,
-.notification .window.confirm {
+.notification-window.html,
+.notification-window.confirm {
 	background-color: #f4f4f4;
 	color: #000;
 }
-.notification .window.confirm > small,
-.notification .window.confirm > .icon {
+.notification-window.confirm > small,
+.notification-window.confirm > .icon {
 	color: #808080;
 }
-.notification .window.confirm > button:nth-child(1) {
+.notification-window.confirm > button:nth-child(1) {
 	color: #e74c3c !important;
 }
-.notification .window.error,
-.notification .window.success {
+.notification-window.error,
+.notification-window.success {
 	background-color: rgba(0,0,0,0.8);
 	color: #fff;
 }
-.notification .window.error small,
-.notification .window.success small {
+.notification-window.error small,
+.notification-window.success small {
 	color: #bfbfbf;
 }
 
-.notification .window.error > .icon {
+.notification-window.error > .icon {
 	color: #e74c3c;
 }
 
-.notification .window.success > .icon {
+.notification-window.success > .icon {
 	color: @brand-success;
 }
-.notification .window.html .title {
+.notification-window.html .title {
 	background-color: @brand-success;
 	color: #fff;
 }
-.notification .window small {
+.notification-window small {
 	font-weight: 300;
 }

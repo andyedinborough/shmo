@@ -117,7 +117,7 @@
 	function _builder(title, description, icon) {
 		var frag = $(document.createDocumentFragment());
 		if (icon) {
-			$('<span class="icon"/>').addClass(icon).appendTo(frag);
+			$('<span class="icon glyphicon"/>').addClass('glyphicon-' + icon).appendTo(frag);
 		}
 		if (title) {
 			$('<strong class="text bold" />').html(title).appendTo(frag);
@@ -147,7 +147,7 @@
 				var options = title;
 				return _error.call(this, options.title, options.description, options.icon, options.duration, options.callback);
 			}
-			return _show(_builder(title, description, icon || 'remove-sign'), duration, 'error', callback);
+			return _show(_builder(title, description, icon || 'remove'), duration, 'error', callback);
 		},
 
 		success: function _success(title, description, icon, duration, cb) {
@@ -201,7 +201,7 @@
 				.style('top', -elm.height());
 
 			if (options.canDismiss !== false) {
-				$('<span class="dismiss icon remove on-right"></span>')
+				$('<span class="dismiss glyphicon glyphicon-remove pull-right"></span>')
 					.prependTo(elm);
 
 				var firstY = 0,

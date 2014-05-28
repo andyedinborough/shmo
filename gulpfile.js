@@ -1,3 +1,4 @@
+/*jshint node: true */
 var gulp = require('gulp');
 
 // Include Our Plugins
@@ -45,6 +46,7 @@ gulp.task('scripts', function() {
 	return gulp.src([
 			'js/prototypes.js',
 			'js/*.ext.js',
+			'bower_components/jquery.tap/jquery.tap.js',
 			'js/utils.js',
 			'js/router.js',
 			'js/transition.js',
@@ -55,6 +57,15 @@ gulp.task('scripts', function() {
 		.pipe(gulp.dest('dist'))
 		.pipe(rename('shmo.min.js'))
 		.pipe(uglify())
+		.pipe(gulp.dest('dist'));
+});
+
+gulp.task('copy', function(){
+	gulp.src('bower_components/jquery/dist/jquery.min.js')
+		.pipe(gulp.dest('dist'));
+	gulp.src('bower_components/move.js/move.min.js')
+		.pipe(gulp.dest('dist'));
+	gulp.src('bower_components/bootstrap/fonts/**')
 		.pipe(gulp.dest('dist'));
 });
 
@@ -76,5 +87,5 @@ gulp.task('watch', ['server'], function() {
 });
 
 // Default Task
-gulp.task('default', ['lint', 'less', 'scripts']);
+gulp.task('default', ['lint', 'less', 'scripts', 'copy']);
 gulp.task('debug', ['default', 'watch']);
