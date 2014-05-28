@@ -65,6 +65,10 @@
 				e.preventDefault();
 				notification.error('NO!');
 			})
+			.on('hiding showing shown hidden', function(e) {
+				console.log(e.type, e.target);
+			})
+
 		</script>
 	</body>
 </html>

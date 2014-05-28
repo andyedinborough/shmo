@@ -104,24 +104,24 @@ article .btn {
   overflow: auto;
 }
 .notification {
-  color: #fff;
   background-color: rgba(0, 0, 0, 0.5);
-  position: absolute;
-  text-align: center;
-  opacity: 0;
   top: 0;
-  left: -100%;
-  bottom: 0;
-  width: 100%;
-  -webkit-transition: opacity 100ms;
-  transition: opacity 100ms;
-}
-.notification.show {
-  opacity: 1;
   left: 0;
+  bottom: 0;
+  right: 0;
 }
-.notification.hiding {
-  opacity: 0 !important;
+.notification,
+.notification-window {
+  display: none;
+  position: absolute;
+}
+.notification.showing,
+.notification-window.showing,
+.notification.hiding,
+.notification-window.hiding,
+.notification.shown,
+.notification-window.shown {
+  display: block;
 }
 .notification.push {
   padding: 12px;
@@ -141,70 +141,55 @@ article .btn {
   color: #428bca;
   margin: 0 0.3em;
 }
-.notification:before {
-  content: '';
-  display: inline-block;
-  height: 100%;
-  vertical-align: middle;
-}
-.notification .window {
-  display: inline-block;
-  vertical-align: middle;
+.notification-window {
   text-align: center;
-  opacity: 0;
-  min-width: 80%;
   font-size: 1.5em;
-  margin-top: 2em;
-  -webkit-transition: opacity 400ms, margin-top 400ms;
-  transition: opacity 400ms, margin-top 400ms;
+  background-color: rgba(0, 0, 0, 0.8);
+  color: #fff;
 }
-.notification .window.show {
-  opacity: 1;
-  margin-top: 0;
-}
-.notification .window button,
-.notification .window .btn {
+.notification-window button,
+.notification-window .btn {
   display: block;
   border: none;
   font-size: 1.2em;
 }
-.notification .window.success,
-.notification .window.error {
+.notification-window.success,
+.notification-window.error {
   border-bottom: none;
 }
-.notification .window.success:after,
-.notification .window.error:after {
+.notification-window.success:after,
+.notification-window.error:after {
   content: 'OK';
   font-size: 2em;
   display: block;
 }
-.notification .window.success:after {
+.notification-window.success:after {
   background-color: #5cb85c;
 }
-.notification .window.error:after {
+.notification-window.error:after {
   background-color: #d9534f;
 }
-.notification .window.multi {
+.notification-window.multi {
   position: absolute;
   bottom: 5%;
   left: 50%;
   margin-left: -140px;
   background: transparent;
 }
-.notification .window.multi span,
-.notification .window.multi strong {
+.notification-window.multi span,
+.notification-window.multi strong {
   background: #EEE;
   padding: 0.5em;
 }
-.notification .window.multi button {
+.notification-window.multi button {
   -webkit-box-shadow: none !important;
   box-shadow: none !important;
   border-radius: 0.3em;
 }
-.notification .window.multi button.text-primary {
+.notification-window.multi button.text-primary {
   color: #428bca;
 }
-.notification .window.multi button.btn-cancel {
+.notification-window.multi button.btn-cancel {
   margin-top: 0.6em;
 }
 .notification .window.growl {
