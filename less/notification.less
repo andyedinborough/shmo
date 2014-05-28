@@ -1,170 +1,145 @@
 
 .notification {
-  color: #fff;
-  background-color: rgba(0, 0, 0, 0.5);
+	background-color: rgba(0, 0, 0, 0.5);
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+
+.notification, .notification-window {
+  display: none;
   position: absolute;
 
-  text-align: center;
-  opacity: 0;
-  top: 0;
-  left: -100%;
-  bottom: 0;
-  width: 100%;
-
-  -webkit-transition: opacity 100ms;
-  transition: opacity 100ms;
-
-  &.show {
-    opacity: 1;
-    left: 0;
-  }
-  &.hiding {
-    opacity: 0 !important;
+  &.showing,&.hiding,&.shown {
+    display: block;
   }
 }
 
 .notification.push {
-  padding: 12px;
-  background-color: rgba(0,0,0,.90);
-  height: auto;
-  &.error {
-    background-color: fade(@brand-danger, 90%);
-  }
-  &.success {
-    background-color: fade(@brand-success, 90%);
-  }
+	padding: 12px;
+	background-color: rgba(0,0,0,.90);
+	height: auto;
+	&.error {
+		background-color: fade(@brand-danger, 90%);
+	}
+	&.success {
+		background-color: fade(@brand-success, 90%);
+	}
 }
 
 .notification .growl {
-  border-radius: 0.2em;
+	border-radius: 0.2em;
 }
 
 .notification a {
-  color: @brand-primary;
-  margin: 0 0.3em;
+	color: @brand-primary;
+	margin: 0 0.3em;
 }
 
-.notification:before {
-  content: '';
-  display: inline-block;
-  height: 100%;
-  vertical-align: middle;
-}
-
-.notification .window {
-  display: inline-block;
-  vertical-align: middle;
+.notification-window {
   text-align: center;
-  opacity: 0;
-  min-width: 80%;
-  font-size: 1.5em;
-  margin-top: 2em;
+	font-size: 1.5em;
+  background-color: rgba(0,0,0,0.8);
+  color: #fff;
 
-  -webkit-transition: opacity 400ms, margin-top 400ms;
-  transition: opacity 400ms, margin-top 400ms;
+	button, .btn {
+		display: block;
+		border: none;
+		font-size: 1.2em;
+	}
 
-  &.show {
-    opacity: 1;
-    margin-top: 0;
-  }
+	&.success, &.error {
+		border-bottom: none;
+		&:after {
+			content: 'OK';
+			font-size: 2em;
+			display: block;
+		}
+	}
 
-  button, .btn {
-    display: block;
-    border: none;
-    font-size: 1.2em;
-  }
+	&.success:after {
+		background-color: @brand-success;
+	}
 
-  &.success, &.error {
-    border-bottom: none;
-    &:after {
-      content: 'OK';
-      font-size: 2em;
-      display: block;
-    }
-  }
+	&.error:after {
+		background-color: @brand-danger;
+	}
 
-  &.success:after {
-    background-color: @brand-success;
-  }
+	&.multi {
+		position: absolute;
+		bottom: 5%;
+		left: 50%;
+		margin-left: -140px;
+		background: transparent;
 
-  &.error:after {
-    background-color: @brand-danger;
-  }
+		span, strong {
+			background: #EEE;
+			padding: 0.5em;
+		}
 
-  &.multi {
-    position: absolute;
-    bottom: 5%;
-    left: 50%;
-    margin-left: -140px;
-    background: transparent;
+		button {
+			-webkit-box-shadow: none !important;
+			box-shadow: none !important;
+			border-radius: 0.3em;
 
-    span, strong {
-      background: #EEE;
-      padding: 0.5em;
-    }
+			&.text-primary {
+				color: @brand;
+			}
 
-    button {
-      -webkit-box-shadow: none !important;
-      box-shadow: none !important;
-      border-radius: 0.3em;
-
-      &.text-primary {
-        color: @brand;
-      }
-
-      &.btn-cancel {
-        margin-top: 0.6em;
-      }
-    }
-  }
+			&.btn-cancel {
+				margin-top: 0.6em;
+			}
+		}
+	}
 }
 
 .notification .window.growl {
-  background-color: rgba(0,0,0,0.8);
+	background-color: rgba(0,0,0,0.8);
 }
 .notification .window.growl strong {
-  color: #bfbfbf;
-  font-weight: 700;
+	color: #bfbfbf;
+	font-weight: 700;
 }
 .notification .window.confirm button,
 .notification .window.html button {
-  background-color: #fff;
-  color: #3d3d3d;
-  font-weight: 400;
+	background-color: #fff;
+	color: #3d3d3d;
+	font-weight: 400;
 }
 .notification .window.html,
 .notification .window.confirm {
-  background-color: #f4f4f4;
-  color: #000;
+	background-color: #f4f4f4;
+	color: #000;
 }
 .notification .window.confirm > small,
 .notification .window.confirm > .icon {
-  color: #808080;
+	color: #808080;
 }
 .notification .window.confirm > button:nth-child(1) {
-  color: #e74c3c !important;
+	color: #e74c3c !important;
 }
 .notification .window.error,
 .notification .window.success {
-  background-color: rgba(0,0,0,0.8);
-  color: #fff;
+	background-color: rgba(0,0,0,0.8);
+	color: #fff;
 }
 .notification .window.error small,
 .notification .window.success small {
-  color: #bfbfbf;
+	color: #bfbfbf;
 }
 
 .notification .window.error > .icon {
-  color: #e74c3c;
+	color: #e74c3c;
 }
 
 .notification .window.success > .icon {
-  color: @brand-success;
+	color: @brand-success;
 }
 .notification .window.html .title {
-  background-color: @brand-success;
-  color: #fff;
+	background-color: @brand-success;
+	color: #fff;
 }
 .notification .window small {
-  font-weight: 300;
+	font-weight: 300;
 }

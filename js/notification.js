@@ -1,25 +1,19 @@
 (function(window, undefined) {
 	'use strict';
 
-	// The default Lungo notification code has several issues and we should rewrite all
-	// of this instead of duck-punching it into oblivion.
-
+	var win = $(window);
 	var setImmediate = window.setImmediate;
 	var _dialog;
 	var _modal;
+	var _className;
 	var _tmr_show;
-	var _addClass;
-	var _removeClass;
-	var _dialogID;
 	var _afterHiddenCallback;
 	var STATES = {};
-	'HIDDEN SHOWING SHOWN HIDING'.split(' ')
+	'hidden showing shown hiding'.split(' ')
 		.forEach(function(x){
-			STATES[x] = x;
+			STATES[x.toUpperCase()] = x;
 		});
 	var _state = STATES.HIDDEN;
-	var _lastTransitionEnd;
-	var CUSTOM_EVENT_NAME = 'x-transitionend';
 
 	function _bind(func, args, self) {
 		args = Array.from(args);
@@ -33,10 +27,12 @@
 		if(cb) cb();
 	}
 
-	function _toggle(visible) {
-		_state = visible ? STATES.SHOWING : STATES.HIDING;
-		//for some silly reason, the animation didn't fire w/ setImmediate
-		setTimeout(visible ? _addClass : _removeClass, 20);
+	function _toggle(visible, className) {
+		if(visible) {
+			transition.show(_dialog, 'prompt', className);
+		} else {
+			transition.hide(_dialog, 'prompt', _className);
+		}
 	}
 
 	function _show(html, duration, className, cb){
@@ -44,20 +40,9 @@
 
 		if(!_dialog) {
 			_modal = $('<div class="notification"/>').appendTo('body');
-			_dialog = $('<div class="window"/>').appendTo(_modal)
-				.on('transitionend', function(e) {
-					var now = e.timeStamp || Date.now();
-					if(now - _lastTransitionEnd < 5) {
-						// 'transitionend' fires for each property being transitioned
-						return;
-					}
-					_lastTransitionEnd = now;
-					_dialog.trigger(CUSTOM_EVENT_NAME);
-				})
-				.on(CUSTOM_EVENT_NAME, function() {
-					_state = _state === STATES.SHOWING ? STATES.SHOWN :
-						_state === STATES.HIDING ? STATES.HIDDEN :
-						_state;
+			_dialog = $('<div class="notification-window"/>').appendTo('body')
+				.on('hidden showing shown hiding', function(e) {
+					_state = e.type;
 				})
 				.on('tap', function(e) {
 					if(e.isDefaultPrevented()) {
@@ -65,10 +50,6 @@
 					}
 					notification.hide();
 				});
-
-			_dialogID = _dialog.id();
-			_addClass = _dialog.addClass.bind(_dialog, 'show');
-			_removeClass = _dialog.removeClass.bind(_dialog, 'show');
 
 			return void setTimeout(_bind(_show, arguments), 20);
 		}
@@ -79,20 +60,34 @@
 
 		_dialog.html(html)
 			.removeAttr('class')
-			.attr('class', 'window')
-			.addClass(className);
+			.attr('class', 'notification-window')
+			.addClass(className)
+			.css({
+				width: win.width() * 0.8 | 0,
+				height: 'auto'
+			});
 
-		_modal.addClass('show');
+		_dialog.css({
+			height: Math.min(_dialog.height(), win.height() * 0.8) | 0,
+			left: (win.width() - _dialog.width()) / 2 | 0
+		});
+
+		_dialog.css({
+			top: (win.height() - _dialog.height()) / 2 | 0
+		});
+
+		transition.show(_modal, 'modal');
 		clearTimeout(_tmr_show);
-		_dialog.one(CUSTOM_EVENT_NAME, function(){
+		_dialog.one('shown', function(){
+			_className = className;
 			if(duration > 0) {
 				_tmr_show = setTimeout(_hide.bind(null, null, cb), duration * 1000);
 			} else {
-				_dialog.one(CUSTOM_EVENT_NAME, cb);
+				_dialog.one('hidden', cb);
 			}
 		});
 
-		_toggle(true);
+		_toggle(true, className);
 	}
 
 	function _hide(hideModal, cb){
@@ -103,7 +98,7 @@
 		}
 
 		if(_state === STATES.SHOWING) {
-			return void _dialog.one(CUSTOM_EVENT_NAME, _bind(_hide, arguments));
+			return void _dialog.one('shown', _bind(_hide, arguments));
 		}
 
 		_afterHiddenCallback = function(){
@@ -111,13 +106,10 @@
 		};
 
 		if(_state === STATES.SHOWN) {
-			_dialog.one(CUSTOM_EVENT_NAME, _afterHidden);
+			_dialog.one('hidden', _afterHidden);
 			_toggle(false);
 			if(hideModal !== false) {
-				_modal.one('transitionend', function(e){
-					if(e.target != this) return;
-					_modal.removeClass('hiding show');
-				}).addClass('hiding');
+				transition.hide(_modal, 'modal');
 			}
 		}
 	}
@@ -323,7 +315,7 @@
 					.text(item.label || '')
 					.on('tap', function() {
 						if (item.callback) {
-							_dialog.one(CUSTOM_EVENT_NAME, item.callback);
+							_dialog.one('hidden', item.callback);
 						}
 						notification.hide();
 					})

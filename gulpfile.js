@@ -61,7 +61,7 @@ gulp.task('scripts', function() {
 // Debug Server
 gulp.task('server', function(next) {
   var connect = require('connect'),
-	  server = connect();
+	server = connect();
   server.use(connect.static('./')).listen(process.env.PORT || 3000, next);
 });
 

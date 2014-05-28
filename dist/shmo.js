@@ -253,7 +253,7 @@
 	var win = $(window),
 		html = $('html');
 
-	var transition = {
+	var transition = window.transition = {
 		move: function (elm){
 			elm = typeof(elm) === 'string' ? $(elm)[0] : elm.length > 0 ? elm[0] : elm;
 			return window.move(elm)
@@ -266,15 +266,6 @@
 				.toggleClass('not-routing', !routing);
 		},
 
-		get: function(name) {
-			name = name || 'slide';
-			var trans = transition[name];
-			if(!trans) return;
-			trans = trans.run || trans;
-			if(typeof trans === 'function') return trans;
-			return transition.get(null);
-		},
-
 		forward: function(elm1, elm0, cb) {
 			var name = elm1.data('transition') || constants.TRANSITION;
 			transition.toggleClasses(true);
@@ -282,11 +273,11 @@
 
 			var mv = move(elm1.length > 0 ? elm1[0] : elm1)
 				.duration(0);
-			transition.reset(mv, name);
+			transition.reset(mv, 'section', name);
 			mv.end(function(){
 				var mv1 = transition.move(elm1);
 				var mv0 = transition.move(elm0);
-				var func = transition.get(name);
+				var func = transition.get('section', name);
 				func(mv1, mv0);
 				mv1.end(function(){
 					transition.toggleClasses(false);
@@ -303,8 +294,8 @@
 			var name = elm0.data('transition') || constants.TRANSITION;
 			var mv0 = transition.move(elm0);
 			var mv1 = transition.move(elm1);
-			transition.reset(mv1);
-			transition.reset(mv0, name);
+			transition.reset(mv1, 'section');
+			transition.reset(mv0, 'section', name);
 			elm1.visible(true);
 			mv1.end(function(){
 				elm1.insertAfter(elm0);
@@ -316,92 +307,137 @@
 			});
 		},
 
-		reset: function(mv, name) {
+		show: function(elm, type, name) {
+			elm.trigger('showing').addClass('showing');
+			var mv = transition.move(elm);
+			transition.reset(mv, type, name);
+			mv.duration(0).end(function(){
+				var mv = transition.move(elm);
+				transition.get(type, name)(mv);
+				mv.end(function(){
+					elm.trigger('shown')
+						.addClass('shown')
+						.removeClass('showing hidden');
+				});
+			});
+		},
+
+		hide: function(elm, type, name) {
+			elm.trigger('hiding').addClass('hiding');
+			var mv = transition.move(elm);
+			transition.reset(mv, type, name);
+			mv.end(function(){
+				elm.trigger('hidden')
+					.addClass('hidden')
+					.removeClass('hiding shown');
+			});
+		},
+
+		get: function(type, name, which) {
+			var area = transition[type] || transition;
+			var trans = area[name] || area;
+			trans = trans[which || 'run'] || trans;
+			return trans;
+		},
+
+		reset: function _reset(mv, type, name) {
 			mv.opacity(1)
 				.translate(0, 0)
 				.rotate(0)
 				.scale(1);
 
-			if(name && transition[name] && transition[name].reset) {
-				transition[name].reset(mv);
+			var rst = transition.get(type, name, 'reset');
+			if(rst !== _reset && $.isFunction(rst)) {
+				rst(mv);
 			}
-
 			return mv;
 		},
 
-		rotate: {
-			reset: function(mv){
-				mv
-					.opacity(0)
-					.x(win.width() / 2)
-					.rotate(15)
-					.y(win.height() / 3)
-					.scale(1);
+		section: {
+			rotate: {
+				reset: function(mv){
+					mv
+						.opacity(0)
+						.x(win.width() / 2)
+						.rotate(15)
+						.y(win.height() / 3)
+						.scale(1);
+				},
+				run: function(mv){
+					mv.y(0).x(0).scale(1).rotate(0).opacity(1);
+				}
 			},
-			run: function(mv){
-				mv.y(0).x(0).scale(1).rotate(0).opacity(1);
+
+			slide: {
+				reset: function(mv) {
+					mv.x(win.width());
+				},
+
+				run: function(mv1, mv0) {
+					mv1.x(0);
+					mv0.opacity(0).rotateY(-45);
+				}
+			},
+
+			slip: {
+				reset: function(mv) {
+					mv.x(win.width());
+				},
+
+				run: function(mv1, mv0) {
+					mv1.x(0);
+					mv0.x(-win.width() / 2);
+				}
+			},
+
+			cover: {
+				reset: function(mv) {
+					mv.y(win.height());
+				},
+				run: function(mv1, mv0) {
+					mv1.y(0);
+					mv0.rotateX(25).opacity(0);
+				}
+			},
+		},
+
+		modal: {
+			reset: function(mv) {
+				mv.opacity(0).duration(constants.DURATION / 4 | 0);
+			},
+			run: function(mv) {
+				mv.opacity(1).duration(constants.DURATION / 4 | 0);
 			}
 		},
 
-		slide: {
+		prompt: {
 			reset: function(mv) {
-				mv.x(win.width());
+				mv.y(win.height()/5).opacity(0).duration(constants.DURATION / 3 | 0);
 			},
-
-			run: function(mv1, mv0) {
-				mv1.x(0);
-				mv0.opacity(0).rotateY(-45);
-			}
-		},
-
-		slip: {
-			reset: function(mv) {
-				mv.x(win.width());
-			},
-
-			run: function(mv1, mv0) {
-				mv1.x(0);
-				mv0.x(-win.width() / 2);
-			}
-		},
-
-		cover: {
-			reset: function(mv) {
-				mv.y(win.height());
-			},
-			run: function(mv1, mv0) {
-				mv1.y(0);
-				mv0.rotateX(25).opacity(0);
+			run: function(mv) {
+				mv.y(0).opacity(1).duration(constants.DURATION / 3 | 0);
 			}
 		}
 	};
-
-	window.transition = transition;
 
 })(window);
 
 (function(window, undefined) {
 	'use strict';
 
-	// The default Lungo notification code has several issues and we should rewrite all
-	// of this instead of duck-punching it into oblivion.
-
+	var win = $(window);
 	var setImmediate = window.setImmediate;
 	var _dialog;
 	var _modal;
+	var _className;
 	var _tmr_show;
-	var _addClass;
-	var _removeClass;
-	var _dialogID;
 	var _afterHiddenCallback;
 	var STATES = {};
-	'HIDDEN SHOWING SHOWN HIDING'.split(' ')
+	'hidden showing shown hiding'.split(' ')
 		.forEach(function(x){
-			STATES[x] = x;
+			STATES[x.toUpperCase()] = x;
 		});
 	var _state = STATES.HIDDEN;
-	var _lastTransitionEnd;
-	var CUSTOM_EVENT_NAME = 'x-transitionend';
 
 	function _bind(func, args, self) {
 		args = Array.from(args);
@@ -415,10 +451,12 @@
 		if(cb) cb();
 	}
 
-	function _toggle(visible) {
-		_state = visible ? STATES.SHOWING : STATES.HIDING;
-		//for some silly reason, the animation didn't fire w/ setImmediate
-		setTimeout(visible ? _addClass : _removeClass, 20);
+	function _toggle(visible, className) {
+		if(visible) {
+			transition.show(_dialog, 'prompt', className);
+		} else {
+			transition.hide(_dialog, 'prompt', _className);
+		}
 	}
 
 	function _show(html, duration, className, cb){
@@ -426,20 +464,9 @@
 
 		if(!_dialog) {
 			_modal = $('<div class="notification"/>').appendTo('body');
-			_dialog = $('<div class="window"/>').appendTo(_modal)
-				.on('transitionend', function(e) {
-					var now = e.timeStamp || Date.now();
-					if(now - _lastTransitionEnd < 5) {
-						// 'transitionend' fires for each property being transitioned
-						return;
-					}
-					_lastTransitionEnd = now;
-					_dialog.trigger(CUSTOM_EVENT_NAME);
-				})
-				.on(CUSTOM_EVENT_NAME, function() {
-					_state = _state === STATES.SHOWING ? STATES.SHOWN :
-						_state === STATES.HIDING ? STATES.HIDDEN :
-						_state;
+			_dialog = $('<div class="notification-window"/>').appendTo('body')
+				.on('hidden showing shown hiding', function(e) {
+					_state = e.type;
 				})
 				.on('tap', function(e) {
 					if(e.isDefaultPrevented()) {
@@ -447,10 +474,6 @@
 					}
 					notification.hide();
 				});
-
-			_dialogID = _dialog.id();
-			_addClass = _dialog.addClass.bind(_dialog, 'show');
-			_removeClass = _dialog.removeClass.bind(_dialog, 'show');
 
 			return void setTimeout(_bind(_show, arguments), 20);
 		}
@@ -461,20 +484,34 @@
 
 		_dialog.html(html)
 			.removeAttr('class')
-			.attr('class', 'window')
-			.addClass(className);
+			.attr('class', 'notification-window')
+			.addClass(className)
+			.css({
+				width: win.width() * 0.8 | 0,
+				height: 'auto'
+			});
 
-		_modal.addClass('show');
+		_dialog.css({
+			height: Math.min(_dialog.height(), win.height() * 0.8) | 0,
+			left: (win.width() - _dialog.width()) / 2 | 0
+		});
+
+		_dialog.css({
+			top: (win.height() - _dialog.height()) / 2 | 0
+		});
+
+		transition.show(_modal, 'modal');
 		clearTimeout(_tmr_show);
-		_dialog.one(CUSTOM_EVENT_NAME, function(){
+		_dialog.one('shown', function(){
+			_className = className;
 			if(duration > 0) {
 				_tmr_show = setTimeout(_hide.bind(null, null, cb), duration * 1000);
 			} else {
-				_dialog.one(CUSTOM_EVENT_NAME, cb);
+				_dialog.one('hidden', cb);
 			}
 		});
 
-		_toggle(true);
+		_toggle(true, className);
 	}
 
 	function _hide(hideModal, cb){
@@ -485,7 +522,7 @@
 		}
 
 		if(_state === STATES.SHOWING) {
-			return void _dialog.one(CUSTOM_EVENT_NAME, _bind(_hide, arguments));
+			return void _dialog.one('shown', _bind(_hide, arguments));
 		}
 
 		_afterHiddenCallback = function(){
@@ -493,13 +530,10 @@
 		};
 
 		if(_state === STATES.SHOWN) {
-			_dialog.one(CUSTOM_EVENT_NAME, _afterHidden);
+			_dialog.one('hidden', _afterHidden);
 			_toggle(false);
 			if(hideModal !== false) {
-				_modal.one('transitionend', function(e){
-					if(e.target != this) return;
-					_modal.removeClass('hiding show');
-				}).addClass('hiding');
+				transition.hide(_modal, 'modal');
 			}
 		}
 	}
@@ -705,7 +739,7 @@
 					.text(item.label || '')
 					.on('tap', function() {
 						if (item.callback) {
-							_dialog.one(CUSTOM_EVENT_NAME, item.callback);
+							_dialog.one('hidden', item.callback);
 						}
 						notification.hide();
 					})

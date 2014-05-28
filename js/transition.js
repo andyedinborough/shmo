@@ -4,7 +4,7 @@
 	var win = $(window),
 		html = $('html');
 
-	var transition = {
+	var transition = window.transition = {
 		move: function (elm){
 			elm = typeof(elm) === 'string' ? $(elm)[0] : elm.length > 0 ? elm[0] : elm;
 			return window.move(elm)
@@ -17,15 +17,6 @@
 				.toggleClass('not-routing', !routing);
 		},
 
-		get: function(name) {
-			name = name || 'slide';
-			var trans = transition[name];
-			if(!trans) return;
-			trans = trans.run || trans;
-			if(typeof trans === 'function') return trans;
-			return transition.get(null);
-		},
-
 		forward: function(elm1, elm0, cb) {
 			var name = elm1.data('transition') || constants.TRANSITION;
 			transition.toggleClasses(true);
@@ -33,11 +24,11 @@
 
 			var mv = move(elm1.length > 0 ? elm1[0] : elm1)
 				.duration(0);
-			transition.reset(mv, name);
+			transition.reset(mv, 'section', name);
 			mv.end(function(){
 				var mv1 = transition.move(elm1);
 				var mv0 = transition.move(elm0);
-				var func = transition.get(name);
+				var func = transition.get('section', name);
 				func(mv1, mv0);
 				mv1.end(function(){
 					transition.toggleClasses(false);
@@ -54,8 +45,8 @@
 			var name = elm0.data('transition') || constants.TRANSITION;
 			var mv0 = transition.move(elm0);
 			var mv1 = transition.move(elm1);
-			transition.reset(mv1);
-			transition.reset(mv0, name);
+			transition.reset(mv1, 'section');
+			transition.reset(mv0, 'section', name);
 			elm1.visible(true);
 			mv1.end(function(){
 				elm1.insertAfter(elm0);
@@ -67,66 +58,117 @@
 			});
 		},
 
-		reset: function(mv, name) {
+		show: function(elm, type, name) {
+			elm.trigger('showing').addClass('showing');
+			var mv = transition.move(elm);
+			transition.reset(mv, type, name);
+			mv.duration(0).end(function(){
+				var mv = transition.move(elm);
+				transition.get(type, name)(mv);
+				mv.end(function(){
+					elm.trigger('shown')
+						.addClass('shown')
+						.removeClass('showing hidden');
+				});
+			});
+		},
+
+		hide: function(elm, type, name) {
+			elm.trigger('hiding').addClass('hiding');
+			var mv = transition.move(elm);
+			transition.reset(mv, type, name);
+			mv.end(function(){
+				elm.trigger('hidden')
+					.addClass('hidden')
+					.removeClass('hiding shown');
+			});
+		},
+
+		get: function(type, name, which) {
+			var area = transition[type] || transition;
+			var trans = area[name] || area;
+			trans = trans[which || 'run'] || trans;
+			return trans;
+		},
+
+		reset: function _reset(mv, type, name) {
 			mv.opacity(1)
 				.translate(0, 0)
 				.rotate(0)
 				.scale(1);
 
-			if(name && transition[name] && transition[name].reset) {
-				transition[name].reset(mv);
+			var rst = transition.get(type, name, 'reset');
+			if(rst !== _reset && $.isFunction(rst)) {
+				rst(mv);
 			}
-
 			return mv;
 		},
 
-		rotate: {
-			reset: function(mv){
-				mv
-					.opacity(0)
-					.x(win.width() / 2)
-					.rotate(15)
-					.y(win.height() / 3)
-					.scale(1);
+		section: {
+			rotate: {
+				reset: function(mv){
+					mv
+						.opacity(0)
+						.x(win.width() / 2)
+						.rotate(15)
+						.y(win.height() / 3)
+						.scale(1);
+				},
+				run: function(mv){
+					mv.y(0).x(0).scale(1).rotate(0).opacity(1);
+				}
 			},
-			run: function(mv){
-				mv.y(0).x(0).scale(1).rotate(0).opacity(1);
+
+			slide: {
+				reset: function(mv) {
+					mv.x(win.width());
+				},
+
+				run: function(mv1, mv0) {
+					mv1.x(0);
+					mv0.opacity(0).rotateY(-45);
+				}
+			},
+
+			slip: {
+				reset: function(mv) {
+					mv.x(win.width());
+				},
+
+				run: function(mv1, mv0) {
+					mv1.x(0);
+					mv0.x(-win.width() / 2);
+				}
+			},
+
+			cover: {
+				reset: function(mv) {
+					mv.y(win.height());
+				},
+				run: function(mv1, mv0) {
+					mv1.y(0);
+					mv0.rotateX(25).opacity(0);
+				}
+			},
+		},
+
+		modal: {
+			reset: function(mv) {
+				mv.opacity(0).duration(constants.DURATION / 4 | 0);
+			},
+			run: function(mv) {
+				mv.opacity(1).duration(constants.DURATION / 4 | 0);
 			}
 		},
 
-		slide: {
+		prompt: {
 			reset: function(mv) {
-				mv.x(win.width());
+				mv.y(win.height()/5).opacity(0).duration(constants.DURATION / 3 | 0);
 			},
-
-			run: function(mv1, mv0) {
-				mv1.x(0);
-				mv0.opacity(0).rotateY(-45);
-			}
-		},
-
-		slip: {
-			reset: function(mv) {
-				mv.x(win.width());
-			},
-
-			run: function(mv1, mv0) {
-				mv1.x(0);
-				mv0.x(-win.width() / 2);
-			}
-		},
-
-		cover: {
-			reset: function(mv) {
-				mv.y(win.height());
-			},
-			run: function(mv1, mv0) {
-				mv1.y(0);
-				mv0.rotateX(25).opacity(0);
+			run: function(mv) {
+				mv.y(0).opacity(1).duration(constants.DURATION / 3 | 0);
 			}
 		}
 	};
-
-	window.transition = transition;
 
 })(window);
