@@ -49,13 +49,23 @@
 			</article>
 		</section>
 
-		<script src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
-		<script src="http://rawgithub.com/visionmedia/move.js/master/move.js"></script>
-		<script src="http://rawgithub.com/aarongloege/jquery.tap/master/jquery.tap.js"></script>
+		<script src="dist/jquery.min.js"></script>
+		<script src="dist/move.min.js"></script>
 		<script src="dist/shmo.js"></script>
 		<script>
 			$.on('tap', '#btn-test-confirm', function(e){
 				e.preventDefault();
+				notification.confirm({
+					title: 'Test',
+					accept: {
+						label: 'Accept',
+						callback: $.noop
+					},
+					cancel: {
+						label: 'Cancel',
+						callback: $.noop
+					}
+				});
 			})
 			.on('tap', '#btn-test-success', function(e) {
 				e.preventDefault();
