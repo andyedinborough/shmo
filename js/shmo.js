@@ -2,7 +2,8 @@
 	'use strict';
 
 	function getPageX(e) {
-		return e.touches && e.touches.length > 0 ? e.touches[0].pageX : e.pageX;
+		var touches = e.touches || (e.originalEvent ? e.originalEvent.touches : null);
+		return touches && touches.length > 0 ? touches[0].pageX : e.pageX;
 	}
 
 	var win = $(window),
@@ -32,7 +33,7 @@
 		var win_width = win.width();
 		var asides = $('aside');
 		var sections = $('section');
-		
+
 		asides
 			.height(win_height)
 			.css({
@@ -83,7 +84,7 @@
 		e.preventDefault();
 		router.aside('#' + $(this).data('aside'));
 	});
-	
+
 	(function(){
 		var _aside_x, _aside, _aside_width, _aside_delta;
 		$.on('touchstart mousedown', '.not-routing [data-aside]', function(e) {

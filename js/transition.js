@@ -21,6 +21,8 @@
 			var name = elm1.data('transition') || constants.TRANSITION;
 			transition.toggleClasses(true);
 			elm1.visible(true).insertAfter(elm0);
+			transition.showing(elm1);
+			transition.hiding(elm0);
 
 			var mv = move(elm1.length > 0 ? elm1[0] : elm1)
 				.duration(0);
@@ -42,6 +44,9 @@
 
 		back: function(elm1, elm0, cb) {
 			transition.toggleClasses(true);
+			transition.showing(elm1);
+			transition.hiding(elm0);
+			
 			var name = elm0.data('transition') || constants.TRANSITION;
 			var mv0 = transition.move(elm0);
 			var mv1 = transition.move(elm1);
@@ -58,29 +63,41 @@
 			});
 		},
 
+		showing: function(elm) {
+			elm.addClass('showing').trigger('showing');
+		},
+
+		shown: function(elm) {
+			elm.addClass('shown').removeClass('showing hidden').trigger('shown');
+		},
+
+		hiding: function(elm) {
+			elm.addClass('hiding').trigger('hiding');
+		},
+
+		hidden: function(elm) {
+			elm.addClass('hidden').removeClass('hiding shown').trigger('hidden');
+		},
+
 		show: function(elm, type, name) {
-			elm.trigger('showing').addClass('showing');
+			transition.showing(elm);
 			var mv = transition.move(elm);
 			transition.reset(mv, type, name);
 			mv.duration(0).end(function(){
 				var mv = transition.move(elm);
 				transition.get(type, name)(mv);
 				mv.end(function(){
-					elm.trigger('shown')
-						.addClass('shown')
-						.removeClass('showing hidden');
+					transition.shown(elm);
 				});
 			});
 		},
 
 		hide: function(elm, type, name) {
-			elm.trigger('hiding').addClass('hiding');
+			transition.hiding(elm);
 			var mv = transition.move(elm);
 			transition.reset(mv, type, name);
 			mv.end(function(){
-				elm.trigger('hidden')
-					.addClass('hidden')
-					.removeClass('hiding shown');
+				transition.hidden(elm);
 			});
 		},
 
