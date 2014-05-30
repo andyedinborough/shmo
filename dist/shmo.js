@@ -665,7 +665,11 @@
 		},
 
 		forward: function(elm1, elm0, cb) {
-			var name = elm1.data('transition') || constants.TRANSITION;
+			var name = elm1.data('transition');
+			if(!name) {
+				name = constants.TRANSITION;
+				elm1.attr('data-transition', name);
+			}
 			transition.toggleClasses(true);
 			elm1.visible(true).insertAfter(elm0);
 			transition.showing(elm1);
@@ -693,7 +697,7 @@
 			transition.toggleClasses(true);
 			transition.showing(elm1);
 			transition.hiding(elm0);
-			
+
 			var name = elm0.data('transition') || constants.TRANSITION;
 			var mv0 = transition.move(elm0);
 			var mv1 = transition.move(elm1);
@@ -801,7 +805,7 @@
 
 				run: function(mv1, mv0) {
 					mv1.x(0);
-					mv0.x(-win.width() / 2);
+					mv0.x(-win.width() / 2).rotateY(-5);
 				}
 			},
 
@@ -1219,7 +1223,7 @@
 		TRANSITION: 'slip'
 	};
 
-	win.on('resize deviceorientationchange init', function(){
+	win.on('resize deviceorientationchange load init', function(){
 		var win_height = win.height();
 		var win_width = win.width();
 		var asides = $('aside');
