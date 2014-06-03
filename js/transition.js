@@ -24,7 +24,7 @@
 				elm1.attr('data-transition', name);
 			}
 			transition.toggleClasses(true);
-			elm1.visible(true).insertAfter(elm0);
+			elm1.visible(true).insertAfter(elm0).boot();
 			transition.showing(elm1);
 			transition.hiding(elm0);
 
@@ -158,7 +158,7 @@
 
 				run: function(mv1, mv0) {
 					mv1.x(0);
-					mv0.x(-win.width() / 2).rotateY(-5);
+					mv0.x(-win.width() / 2).rotateY(-10);
 				}
 			},
 

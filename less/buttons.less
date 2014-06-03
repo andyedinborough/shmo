@@ -1,0 +1,51 @@
+.btn-color(@color, @dark-color) {
+	background: @color;
+
+	border-color: darken(@color, 5%);
+	border-top-color: lighten(@color, 5%);
+	border-left-color: lighten(@color, 5%);
+	.glyphicon {
+		border-top-color: lighten(@dark-color, 5%);
+		border-left-color: lighten(@dark-color, 5%);
+		bprder-bottom-color: darken(@dark-color, 10%);
+		border-right: none;
+		background: @dark-color;
+	}
+}
+
+.btn {
+	border: 2px solid;
+	padding: 6px 12px;
+	border-radius: 3px;
+	display: inline-block;
+
+	.glyphicon {
+		margin: -9px 12px -7px -14px;
+		padding: 7px 12px 8px;
+		display: block;
+		float: left;
+		border-top-left-radius: inherit;
+		border-bottom-left-radius: inherit;
+		border: inherit;
+	}
+
+	&.btn-danger {
+		.btn-color(@brand-danger, darken(@brand-danger, 7%));
+	}
+
+	&.btn-success {
+		.btn-color(@brand-success, darken(@brand-success, 7%));
+	}
+
+	&.btn-primary {
+		.btn-color(@brand-primary, darken(@brand-primary, 7%));
+	}
+
+	&.btn-info {
+		.btn-color(@brand-info, darken(@brand-info, 7%));
+	}
+
+	&.btn-warning {
+		.btn-color(@brand-warning, darken(@brand-warning, 7%));
+	}
+}

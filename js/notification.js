@@ -67,6 +67,8 @@
 				height: 'auto'
 			});
 
+		_dialog.boot();
+
 		_dialog.css({
 			height: Math.min(_dialog.height(), win.height() * 0.8) | 0,
 			left: (win.width() - _dialog.width()) / 2 | 0
@@ -156,28 +158,6 @@
 				return _success.call(this, options.title, options.description, options.icon, options.duration, options.callback);
 			}
 			return _show(_builder(title, description, icon || 'ok'), duration, 'success', cb);
-		},
-
-		successThenBack: function successThenBack(title, description, icon, duration, callback) {
-			if ($.type(title) === 'object' && 'title' in title) {
-				return successThenBack(title.title, title.description, title.icon, title.duration, title.callback);
-			}
-
-			notification.success(title, description, icon, duration, function() {
-				router.back();
-				if (callback) callback.apply(null, arguments);
-			});
-		},
-
-		errorThenBack: function errorThenBack(title, description, icon, duration, callback) {
-			if ($.type(title) === 'object' && 'title' in title) {
-				return errorThenBack(title.title, title.description, title.icon, title.duration, title.callback);
-			}
-
-			notification.error(title, description, icon, duration, function() {
-				router.back();
-				if (callback) callback.apply(null, arguments);
-			});
 		},
 
 		html: function(html, icon, className, cb) {

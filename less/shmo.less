@@ -1,9 +1,9 @@
 @import url("https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700");
 @brand-primary: #428bca;
-@brand-success: #5cb85c;
+@brand-success: #008b4e;
 @brand-info:    #5bc0de;
 @brand-warning: #f0ad4e;
-@brand-danger:  #d9534f;
+@brand-danger:  #cc0000;
 @brand: @brand-primary;
 
 @icon-font-path: '';
@@ -68,9 +68,6 @@ footer {
 	background: #000;
 }
 
-button, .btn {
-	padding: 0.5em;
-}
 
 article {
 	background: #fff;
@@ -88,6 +85,14 @@ article {
 
 .pull-right {
 	float: right;
+}
+
+.pull-left {
+	float: left;
+}
+
+.rounded {
+	border-radius: 3px;
 }
 
 .anchor {
@@ -108,4 +113,5 @@ section[data-transition="slip"] {
 
 @import 'notification';
 @import 'loading';
+@import 'buttons';
 @import '../bower_components/bootstrap/less/glyphicons';

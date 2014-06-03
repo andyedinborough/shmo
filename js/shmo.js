@@ -64,6 +64,23 @@
 		});
 	});
 
+	$.on('boot', function(e) {
+		$('[data-icon]', e.target).forEach(function(elm) {
+			elm = $(elm);
+			$('<span class="glyphicon" />')
+				.addClass('glyphicon-' + elm.data('icon'))
+				.prependTo(elm);
+			elm.removeAttr('data-icon');
+		});
+
+		$('[data-loading]', e.target).forEach(function(elm) {
+			elm = $(elm).empty();
+			$('<div class="loading" />')
+				.addClass(elm.data('loading'))
+				.appendTo(elm);
+		});
+	});
+
 	$(function(){
 		win.trigger('init');
 		transition.toggleClasses(false);

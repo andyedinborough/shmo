@@ -128,13 +128,22 @@
 (function(window, undefined) {
 	'use strict';
 
-	var uuid = 0;
+	var _uuid = 0, _initd = {};
 	$.fn.forEach = Array.prototype.forEach;
+
+	$.fn.boot = function(){
+		var id = this.id();
+		if(!_initd[id]){
+			_initd[id] = true;
+			this.trigger('boot');
+		}
+		return this;
+	};
 
 	$.fn.id = function(){
 		var id = this[0].id;
 		if(!id) {
-			id = 'e' + uuid++;
+			id = 'e' + _uuid++;
 			this.attr('id', id);
 		}
 		return id;
@@ -586,7 +595,7 @@
 
 	var router = window.router = {
 		history: [],
-		
+
 		back: function(cb) {
 			var cur = router.history.pop();
 			var prev = router.history.last();
@@ -601,7 +610,7 @@
 			if(section0) {
 				transition.forward(section, section0, cb);
 			} else {
-				section.visible(true).insertAfter($('section:last'));
+				section.visible(true).insertAfter($('section:last')).boot();
 				if(cb) cb();
 			}
 			return section;
@@ -671,7 +680,7 @@
 				elm1.attr('data-transition', name);
 			}
 			transition.toggleClasses(true);
-			elm1.visible(true).insertAfter(elm0);
+			elm1.visible(true).insertAfter(elm0).boot();
 			transition.showing(elm1);
 			transition.hiding(elm0);
 
@@ -805,7 +814,7 @@
 
 				run: function(mv1, mv0) {
 					mv1.x(0);
-					mv0.x(-win.width() / 2).rotateY(-5);
+					mv0.x(-win.width() / 2).rotateY(-10);
 				}
 			},
 
@@ -910,6 +919,8 @@
 				height: 'auto'
 			});
 
+		_dialog.boot();
+
 		_dialog.css({
 			height: Math.min(_dialog.height(), win.height() * 0.8) | 0,
 			left: (win.width() - _dialog.width()) / 2 | 0
@@ -999,28 +1010,6 @@
 				return _success.call(this, options.title, options.description, options.icon, options.duration, options.callback);
 			}
 			return _show(_builder(title, description, icon || 'ok'), duration, 'success', cb);
-		},
-
-		successThenBack: function successThenBack(title, description, icon, duration, callback) {
-			if ($.type(title) === 'object' && 'title' in title) {
-				return successThenBack(title.title, title.description, title.icon, title.duration, title.callback);
-			}
-
-			notification.success(title, description, icon, duration, function() {
-				router.back();
-				if (callback) callback.apply(null, arguments);
-			});
-		},
-
-		errorThenBack: function errorThenBack(title, description, icon, duration, callback) {
-			if ($.type(title) === 'object' && 'title' in title) {
-				return errorThenBack(title.title, title.description, title.icon, title.duration, title.callback);
-			}
-
-			notification.error(title, description, icon, duration, function() {
-				router.back();
-				if (callback) callback.apply(null, arguments);
-			});
 		},
 
 		html: function(html, icon, className, cb) {
@@ -1256,6 +1245,23 @@
 				article = $(article);
 				article.height(win_height - header_height - footer_height);
 			});
+		});
+	});
+
+	$.on('boot', function(e) {
+		$('[data-icon]', e.target).forEach(function(elm) {
+			elm = $(elm);
+			$('<span class="glyphicon" />')
+				.addClass('glyphicon-' + elm.data('icon'))
+				.prependTo(elm);
+			elm.removeAttr('data-icon');
+		});
+
+		$('[data-loading]', e.target).forEach(function(elm) {
+			elm = $(elm).empty();
+			$('<div class="loading" />')
+				.addClass(elm.data('loading'))
+				.appendTo(elm);
 		});
 	});
 

@@ -6,7 +6,7 @@
 
 	var router = window.router = {
 		history: [],
-		
+
 		back: function(cb) {
 			var cur = router.history.pop();
 			var prev = router.history.last();
@@ -21,7 +21,7 @@
 			if(section0) {
 				transition.forward(section, section0, cb);
 			} else {
-				section.visible(true).insertAfter($('section:last'));
+				section.visible(true).insertAfter($('section:last')).boot();
 				if(cb) cb();
 			}
 			return section;

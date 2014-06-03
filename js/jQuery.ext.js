@@ -1,13 +1,22 @@
 (function(window, undefined) {
 	'use strict';
 
-	var uuid = 0;
+	var _uuid = 0, _initd = {};
 	$.fn.forEach = Array.prototype.forEach;
+
+	$.fn.boot = function(){
+		var id = this.id();
+		if(!_initd[id]){
+			_initd[id] = true;
+			this.trigger('boot');
+		}
+		return this;
+	};
 
 	$.fn.id = function(){
 		var id = this[0].id;
 		if(!id) {
-			id = 'e' + uuid++;
+			id = 'e' + _uuid++;
 			this.attr('id', id);
 		}
 		return id;
