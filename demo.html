@@ -22,11 +22,12 @@
 				<h1>Yo!</h1>
 			</header>
 			<article>
-				<button data-section="next">Next</button>
+				<button class="btn btn-primary" data-section="next">Next</button>
 
-				<button id="btn-test-confirm">Confirm</button>
-				<button id="btn-test-success">Success</button>
-				<button id="btn-test-error">Error</button>
+				<button class="btn btn-primary" id="btn-test-confirm">Confirm</button>
+				<button class="btn btn-success" id="btn-test-success" data-icon="ok">Success</button>
+				<button class="btn btn-danger" id="btn-test-error" data-icon="remove">Error</button>
+				<button class="btn btn-info" id="btn-test-wait">Wait</button>
 			</article>
 		</section>
 
@@ -35,8 +36,8 @@
 				<h1>Next!</h1>
 			</header>
 			<article>
-				<button data-section="back">Back</button>
-				<button data-section="next2">Next2</button>
+				<button class="btn btn-primary" data-section="back">Back</button>
+				<button class="btn btn-primary" data-section="next2">Next2</button>
 			</article>
 		</section>
 
@@ -45,7 +46,7 @@
 				<h1>Next 2!</h1>
 			</header>
 			<article>
-				<button data-section="back">Back</button>
+				<button data-section="back" class="btn btn-success">Back</button>
 			</article>
 		</section>
 
@@ -74,6 +75,10 @@
 			.on('tap', '#btn-test-error', function(e) {
 				e.preventDefault();
 				notification.error('NO!');
+			})
+			.on('tap', '#btn-test-wait', function(e) {
+				e.preventDefault();
+				notification.show();
 			});
 
 		</script>
