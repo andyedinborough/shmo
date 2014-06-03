@@ -1,12 +1,12 @@
 (function(window, undefined) {
 	'use strict';
 
-	var _uuid = 0, _initd = {};
+	var _uuid = 0, _initd= {};
 	$.fn.forEach = Array.prototype.forEach;
 
-	$.fn.boot = function(){
+	$.fn.boot = function(force){
 		var id = this.id();
-		if(!_initd[id]){
+		if(!_initd[id] || force){
 			_initd[id] = true;
 			this.trigger('boot');
 		}

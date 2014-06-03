@@ -65,9 +65,8 @@
 			.css({
 				width: win.width() * 0.8 | 0,
 				height: 'auto'
-			});
-
-		_dialog.boot();
+			})
+			.boot(true);
 
 		_dialog.css({
 			height: Math.min(_dialog.height(), win.height() * 0.8) | 0,

@@ -128,12 +128,12 @@
 (function(window, undefined) {
 	'use strict';
 
-	var _uuid = 0, _initd = {};
+	var _uuid = 0, _initd= {};
 	$.fn.forEach = Array.prototype.forEach;
 
-	$.fn.boot = function(){
+	$.fn.boot = function(force){
 		var id = this.id();
-		if(!_initd[id]){
+		if(!_initd[id] || force){
 			_initd[id] = true;
 			this.trigger('boot');
 		}
@@ -917,9 +917,8 @@
 			.css({
 				width: win.width() * 0.8 | 0,
 				height: 'auto'
-			});
-
-		_dialog.boot();
+			})
+			.boot(true);
 
 		_dialog.css({
 			height: Math.min(_dialog.height(), win.height() * 0.8) | 0,
