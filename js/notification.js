@@ -171,13 +171,13 @@
 				tap = options.callback;
 			}
 
-			var elm = $('<div class="notification push" />');
+			var elm = $('<div class="notification-push" />');
 			elm
 				.text(text)
 				.appendTo('body')
-				.style('top', -screen.height)
+				.css('top', -screen.height)
 				.show()
-				.style('top', -elm.height());
+				.css('top', -elm.height());
 
 			if (options.canDismiss !== false) {
 				$('<span class="dismiss glyphicon glyphicon-remove pull-right"></span>')

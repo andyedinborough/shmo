@@ -3,7 +3,7 @@ SHMO
 
 A simple Html5 mobile framework.
 
-Demo: http://jsbin.com/xajic/latest
+Demo: http://andyedinborough.github.io/shmo/demo.html
 
 Project goals
   - Simple, minimalist API

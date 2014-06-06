@@ -137,15 +137,19 @@ section[data-transition="slip"].hiding {
 .notification-window.shown {
   display: block;
 }
-.notification.push {
+.notification-push {
+  position: absolute;
+  left: 0;
+  width: 100%;
   padding: 12px;
   background-color: rgba(0, 0, 0, 0.9);
   height: auto;
+  color: white;
 }
-.notification.push.error {
+.notification-push.error {
   background-color: rgba(204, 0, 0, 0.9);
 }
-.notification.push.success {
+.notification-push.success {
   background-color: rgba(0, 139, 78, 0.9);
 }
 .notification .growl {

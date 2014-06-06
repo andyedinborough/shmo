@@ -1,4 +1,3 @@
-
 .notification {
 	background-color: rgba(0, 0, 0, 0.5);
 	top: 0;
@@ -17,10 +16,13 @@
 	}
 }
 
-.notification.push {
+.notification-push {
+	position: absolute;
+	left: 0; width: 100%;
 	padding: 12px;
 	background-color: rgba(0,0,0,.90);
 	height: auto;
+	color: white;
 	&.error {
 		background-color: fade(@brand-danger, 90%);
 	}
