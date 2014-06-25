@@ -23,6 +23,7 @@
 	background-color: rgba(0,0,0,.90);
 	height: auto;
 	color: white;
+	box-shadow: 0 0 100px black;
 	&.error {
 		background-color: fade(@brand-danger, 90%);
 	}
@@ -47,8 +48,19 @@
 
 	button, .btn {
 		display: block;
-		border: none;
 		font-size: 1.2em;
+	}
+
+	.notification-content {
+
+	}
+
+	.notification-title {
+		font-weight: bold;
+	}
+
+	.notification-description {
+		font-size: 0.8em;
 	}
 
 	&.success, &.error {
@@ -58,6 +70,13 @@
 			font-size: 2em;
 			display: block;
 		}
+	}
+
+	.btn-accept {
+		.btn.btn-success;
+	}
+	.btn-cancel {
+		color: #444;
 	}
 
 	&.success:after {
@@ -74,65 +93,32 @@
 		line-height: 1.5em;
 	}
 
-	& > strong {
+	& > .notification-title {
 		display: block;
 		font-size: 1.5em;
 		line-height: 2em;
 	}
 
-	&.multi {
-		position: absolute;
-		bottom: 5%;
-		left: 50%;
-		margin-left: -140px;
-		background: transparent;
+	&.html {
+		background-color: #f4f4f4;
+		color: #000;
+	}
 
-		span, strong {
-			background: #EEE;
-			padding: 0.5em;
+	&.multi {
+		background-color: transparent;
+
+		.notification-title {
+			background: #eee;
+			margin-bottom: @medium;
+			.rounded;
 		}
 
-		button {
-			-webkit-box-shadow: none !important;
-			box-shadow: none !important;
-			border-radius: 0.3em;
-
-			&.text-primary {
-				color: @brand;
-			}
-
-			&.btn-cancel {
-				margin-top: 0.6em;
-			}
+		.btn {
+			margin-top: 0.1em;
 		}
 	}
 }
 
-.notification-window.growl {
-	background-color: rgba(0,0,0,0.8);
-}
-.notification-window.growl strong {
-	color: #bfbfbf;
-	font-weight: 700;
-}
-.notification-window.confirm button,
-.notification-window.html button {
-	background-color: #fff;
-	color: #3d3d3d;
-	font-weight: 400;
-}
-.notification-window.html,
-.notification-window.confirm {
-	background-color: #f4f4f4;
-	color: #000;
-}
-.notification-window.confirm > small,
-.notification-window.confirm > .icon {
-	color: #808080;
-}
-.notification-window.confirm > button:nth-child(1) {
-	color: #e74c3c !important;
-}
 .notification-window.error,
 .notification-window.success {
 	background-color: rgba(0,0,0,0.8);
@@ -153,7 +139,4 @@
 .notification-window.html .title {
 	background-color: @brand-success;
 	color: #fff;
-}
-.notification-window small {
-	font-weight: 300;
 }

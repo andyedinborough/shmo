@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700");
+@import url("https://fonts.googleapis.com/css?family=Open+Sans:300,400,600");
 @brand-primary: #428bca;
 @brand-success: #008b4e;
 @brand-info:    #5bc0de;
@@ -12,12 +12,93 @@
 
 @import 'reset';
 
+@large: 1em;
+@medium: 0.5em;
+@small: 0.25em;
+
+.mal { margin: @large; }
+.mbl { margin-bottom: @large; }
+.mtl { margin-top: @large; }
+.mrl { margin-right: @large; }
+.mll { margin-left: @large; }
+.mam { margin: @medium; }
+.mbm { margin-bottom: @medium; }
+.mtm { margin-top: @medium; }
+.mrm { margin-right: @medium; }
+.mlm { margin-left: @medium; }
+.mas { margin: @small; }
+.mbs { margin-bottom: @small; }
+.mts { margin-top: @small; }
+.mrs { margin-right: @small; }
+.mls { margin-left: @small; }
+.man { margin: none; }
+.mbn { margin-bottom: none; }
+.mtn { margin-top: none; }
+.mrn { margin-right: none; }
+.mln { margin-left: none; }
+
+.pal { padding: @large; }
+.pbl { padding-bottom: @large; }
+.ptl { padding-top: @large; }
+.prl { padding-right: @large; }
+.pll { padding-left: @large; }
+.pam { padding: @medium; }
+.pbm { padding-bottom: @medium; }
+.ptm { padding-top: @medium; }
+.prm { padding-right: @medium; }
+.plm { padding-left: @medium; }
+.pas { padding: @small; }
+.pbs { padding-bottom: @small; }
+.pts { padding-top: @small; }
+.prs { padding-right: @small; }
+.pls { padding-left: @small; }
+.pan { padding: none; }
+.pbn { padding-bottom: none; }
+.ptn { padding-top: none; }
+.prn { padding-right: none; }
+.pln { padding-left: none; }
+
+.text-danger { color: @brand-danger; }
+.text-success { color: @brand-success; }
+.text-warning { color: @brand-warning; }
+.text-info { color: @brand-info; }
+.text-primary { color: @brand-primary; }
+
+.text-small {
+	font-size: 0.8em;
+}
+
+.pull-right {
+	float: right;
+}
+
+.pull-left {
+	float: left;
+}
+
+.rounded {
+	border-radius: 3px;
+}
+
+.anchor {
+	width: 100%;
+	display: block;
+}
+
+.scroll {
+	overflow: auto;
+}
+
 body {
 	background: #000;
-	font: 18px 'Source Sans Pro';
+	font: 18px 'Open Sans';
+	font-weight: 300;
 	-webkit-perspective: 1000px;
 	perspective: 1000px;
 	overflow: hidden;
+}
+* {
+	box-sizing: border-box;
 }
 aside {
 	position: absolute;
@@ -49,18 +130,24 @@ header {
 	background-color: @brand;
 	color: white;
 	font-size: 1.4em;
+	text-shadow: 0 1px 1px #111;
+	line-height: 2em;
 
 	h1 {
 		text-align: center;
-		padding: 0.5em 0
+		.man;
+		.pan;
 	}
 
 	nav {
-		float:left;
+		float: left;
+		line-height: inherit;
 	}
 
 	button {
 		background: transparent;
+		line-height: inherit;
+		.mls;
 	}
 }
 
@@ -71,6 +158,7 @@ footer {
 
 article {
 	background: #fff;
+	.pam;
 
 	button, .btn {
 		background: @brand;
@@ -79,39 +167,13 @@ article {
 	}
 }
 
-.text-smaller {
-	font-size: 0.8em;
-}
-
-.pull-right {
-	float: right;
-}
-
-.pull-left {
-	float: left;
-}
-
-.rounded {
-	border-radius: 3px;
-}
-
-.anchor {
-	width: 100%;
-	display: block;
-}
-
-.scroll {
-	overflow: auto;
-}
-
 section[data-transition="slip"] {
 	&.showing, &.hiding {
 		box-shadow: -5px 0 100px rgba(0,0,0,.1)
 	}
 }
 
-
+@import 'buttons';
 @import 'notification';
 @import 'loading';
-@import 'buttons';
 @import '../bower_components/bootstrap/less/glyphicons';
