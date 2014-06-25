@@ -52,7 +52,7 @@
 				'js/router.js',
 				'js/transition.js',
 				'js/notification.js',
-				'js/pull.js'
+				'js/pull.js',
 				'js/shmo.js'
 			])
 			.pipe(concat('shmo.js'))
