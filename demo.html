@@ -15,7 +15,7 @@
 		<section id="main">
 			<header>
 				<nav>
-					<button data-aside="sidebar" class="text-smaller">
+					<button data-aside="sidebar">
 						MENU
 					</button>
 				</nav>
@@ -28,6 +28,7 @@
 				<button class="btn btn-success" id="btn-test-success" data-icon="ok">Success</button>
 				<button class="btn btn-danger" id="btn-test-error" data-icon="remove">Error</button>
 				<button class="btn btn-info" id="btn-test-wait">Wait</button>
+				<button class="btn btn-info" id="btn-test-push">Push</button>
 			</article>
 		</section>
 
@@ -79,6 +80,10 @@
 			.on('tap', '#btn-test-wait', function(e) {
 				e.preventDefault();
 				notification.show();
+			})
+			.on('tap', '#btn-test-push', function(e) {
+				e.preventDefault();
+				notification.push('Test!');
 			});
 
 		</script>

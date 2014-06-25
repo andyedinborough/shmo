@@ -128,12 +128,12 @@
 (function(window, undefined) {
 	'use strict';
 
-	var _uuid = 0, _initd = {};
+	var _uuid = 0, _initd= {};
 	$.fn.forEach = Array.prototype.forEach;
 
-	$.fn.boot = function(){
+	$.fn.boot = function(force){
 		var id = this.id();
-		if(!_initd[id]){
+		if(!_initd[id] || force){
 			_initd[id] = true;
 			this.trigger('boot');
 		}
@@ -917,9 +917,8 @@
 			.css({
 				width: win.width() * 0.8 | 0,
 				height: 'auto'
-			});
-
-		_dialog.boot();
+			})
+			.boot(true);
 
 		_dialog.css({
 			height: Math.min(_dialog.height(), win.height() * 0.8) | 0,
@@ -974,9 +973,9 @@
 			$('<span class="icon glyphicon"/>').addClass('glyphicon-' + icon).appendTo(frag);
 		}
 		if (title) {
-			$('<strong class="text bold" />').html(title).appendTo(frag);
+			$('<div class="notification-title" />').html(title).appendTo(frag);
 		}
-		$('<small />').html(description || '').appendTo(frag);
+		$('<div class="notification-description" />').html(description || '').appendTo(frag);
 
 		return frag;
 	}
@@ -1024,13 +1023,13 @@
 				tap = options.callback;
 			}
 
-			var elm = $('<div class="notification push" />');
+			var elm = $('<div class="notification-push" />');
 			elm
 				.text(text)
 				.appendTo('body')
-				.style('top', -screen.height)
+				.css('top', -screen.height)
 				.show()
-				.style('top', -elm.height());
+				.css('top', -elm.height());
 
 			if (options.canDismiss !== false) {
 				$('<span class="dismiss glyphicon glyphicon-remove pull-right"></span>')
@@ -1142,9 +1141,11 @@
 			}
 
 			options.items.forEach(function(item) {
-				$('<button class="anchor" />')
-					.addClass(item.className || '')
-					.text(item.label || '')
+				var lbl = $.trim(item.label);
+				var cls = 'btn-' + lbl.toLowerCase().replace(/\W+/g, '-');
+				$('<button class="anchor btn btn-default" />')
+					.addClass($.trim(item.className) + ' ' + cls)
+					.text(lbl)
 					.on('tap', function() {
 						if (item.callback) {
 							_dialog.one('hidden', item.callback);
@@ -1162,10 +1163,9 @@
 			return this.multi({
 				title: options.title,
 				description: options.description,
-				className: 'confirm',
 				items: {
 					accept: options.accept,
-					cancel: Object.assign(options.cancel, { className: 'text red' })
+					cancel: options.cancel
 				}
 			});
 		}
