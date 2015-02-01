@@ -286,7 +286,7 @@ button:focus {
   border-left-color: #fbfbfb;
   box-shadow: inset 0 0 5px 1px #dcdcdc;
   background-image: -webkit-linear-gradient(top, #eeeeee 0, #dcdcdc 100%);
-  background-image: linear-gradient(from top, #eeeeee 0, #e9e9e9 100%);
+  background-image: linear-gradient(to bottom, #eeeeee 0, #e9e9e9 100%);
   text-shadow: 0 1px 1px #444;
 }
 .btn.btn-default .glyphicon {
@@ -303,7 +303,7 @@ button:focus {
   border-left-color: #e60000;
   box-shadow: inset 0 0 5px 1px #a80000;
   background-image: -webkit-linear-gradient(top, #cc0000 0, #a80000 100%);
-  background-image: linear-gradient(from top, #cc0000 0, #c20000 100%);
+  background-image: linear-gradient(to bottom, #cc0000 0, #c20000 100%);
   text-shadow: 0 1px 1px #444;
 }
 .btn.btn-danger .glyphicon {
@@ -320,7 +320,7 @@ button:focus {
   border-left-color: #00a45c;
   box-shadow: inset 0 0 5px 1px #00673a;
   background-image: -webkit-linear-gradient(top, #008b4e 0, #00673a 100%);
-  background-image: linear-gradient(from top, #008b4e 0, #008148 100%);
+  background-image: linear-gradient(to bottom, #008b4e 0, #008148 100%);
   text-shadow: 0 1px 1px #444;
 }
 .btn.btn-success .glyphicon {
@@ -337,7 +337,7 @@ button:focus {
   border-left-color: #5697d0;
   box-shadow: inset 0 0 5px 1px #3379b5;
   background-image: -webkit-linear-gradient(top, #428bca 0, #3379b5 100%);
-  background-image: linear-gradient(from top, #428bca 0, #3a86c8 100%);
+  background-image: linear-gradient(to bottom, #428bca 0, #3a86c8 100%);
   text-shadow: 0 1px 1px #444;
 }
 .btn.btn-primary .glyphicon {
@@ -354,7 +354,7 @@ button:focus {
   border-left-color: #70c8e2;
   box-shadow: inset 0 0 5px 1px #3db5d8;
   background-image: -webkit-linear-gradient(top, #5bc0de 0, #3db5d8 100%);
-  background-image: linear-gradient(from top, #5bc0de 0, #53bddc 100%);
+  background-image: linear-gradient(to bottom, #5bc0de 0, #53bddc 100%);
   text-shadow: 0 1px 1px #444;
 }
 .btn.btn-info .glyphicon {
@@ -371,7 +371,7 @@ button:focus {
   border-left-color: #f2b866;
   box-shadow: inset 0 0 5px 1px #ed9e2d;
   background-image: -webkit-linear-gradient(top, #f0ad4e 0, #ed9e2d 100%);
-  background-image: linear-gradient(from top, #f0ad4e 0, #efa945 100%);
+  background-image: linear-gradient(to bottom, #f0ad4e 0, #efa945 100%);
   text-shadow: 0 1px 1px #444;
 }
 .btn.btn-warning .glyphicon {
@@ -458,7 +458,7 @@ button:focus {
   border-left-color: #00a45c;
   box-shadow: inset 0 0 5px 1px #00673a;
   background-image: -webkit-linear-gradient(top, #008b4e 0, #00673a 100%);
-  background-image: linear-gradient(from top, #008b4e 0, #008148 100%);
+  background-image: linear-gradient(to bottom, #008b4e 0, #008148 100%);
   text-shadow: 0 1px 1px #444;
 }
 .notification-window .btn-accept .glyphicon {
